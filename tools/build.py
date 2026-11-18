@@ -308,6 +308,7 @@ def write_static():
     (ROOT / 'assets/logo/logo-white.svg').write_text(lockup_svg(True))
     (ROOT / 'robots.txt').write_text(f"""User-agent: *
 Allow: /
+Disallow: /preview/
 
 # AI / answer-engine crawlers are welcome
 User-agent: GPTBot

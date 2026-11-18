@@ -6,8 +6,8 @@
  "phoneE164": "+37255633416",
  "email": "office.kinnisvara@gmail.com",
  "city": "Tallinn",
- "address": null,
- "vat": null,
+ "address": "Käämo tee 8, Harkujärve küla, Harku vald, Harju maakond, 76912",
+ "vat": "EE101835268",
  "baseUrl": "https://tarkkinnisvara.ee",
  "modified": "2026-11-18",
  "formUrl": ""

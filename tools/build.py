@@ -138,7 +138,9 @@ def org_node():
          "knowsLanguage": ["et", "ru", "en"],
          "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "telephone": C['phoneE164'], "email": C['email'],
                           "availableLanguage": ["Estonian", "Russian", "English"]}}
-    if C.get('address'): n['address']['streetAddress'] = C['address']
+    if C.get('address'):
+        n['address'] = {"@type": "PostalAddress", "streetAddress": "Käämo tee 8", "addressLocality": "Harkujärve küla, Harku vald",
+                        "addressRegion": "Harju maakond", "postalCode": "76912", "addressCountry": "EE"}
     if C.get('vat'): n['vatID'] = C['vat']
     return n
 
@@ -186,7 +188,7 @@ def build_index(lang):
     s = must_rep('<section class="pin" id="lugu">', f'<h1 class="sr">{esc(K.H1[lang])}</h1>\n<section class="pin" id="lugu">', s)
     # contact block
     cinfo = (f'<div class="cinfo"><b>{C["legalName"]}</b><span><span data-t="reg"></span> {C["regCode"]}</span>'
-             f'<a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div>')
+             f'<span>KMKR {C["vat"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div><div class="cinfo"><span>{C["address"]}</span></div>')
     s = must_rep('<p class="lead" data-t="c_p"></p>\n<form id="cf" novalidate>', f'<p class="lead" data-t="c_p"></p>\n{cinfo}\n<form id="cf" novalidate>', s)
     s = must_rep('<label class="chk"><input type="checkbox" name="ok" required><span data-t="f_consent"></span></label>',
                  '<label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>'
@@ -195,7 +197,7 @@ def build_index(lang):
     s = must_rep('<div class="ok" id="cok">', f'<div class="ok" id="cfail" style="background:#fee2e2;color:#7f1d1d;margin-bottom:10px"><span data-t="f_fail"></span> <a href="mailto:{C["email"]}">{C["email"]}</a></div><div class="ok" id="cok">', s)
     # footer
     foot = (f'<footer><div><span class="logo" style="gap:9px">{mark_svg("lm", "width:26px;height:26px")}<span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]}</span></span>'
-            f'<div class="fl"><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div></div>'
+            f'<div class="fl"><span>KMKR {C["vat"]}</span><span>{C["address"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div></div>'
             f'<div><a href="privacy.html" data-t="lg"></a> · <a href="myygil.html" data-t="f4"></a> · <a href="kaart.html" data-t="n3"></a><small data-t="foot"></small></div></footer>')
     s = must_sub(r'<footer>.*?</footer>', lambda m: foot, s)
     # form handler
@@ -233,7 +235,7 @@ def build_myygil(lang):
     s = common(s, lang, 'myygil', A)
     tx = node_tx(s)[lang]
     OBJ = json.loads(re.search(r'const OBJ=(\[.*?\]);\n', s, re.S).group(1))
-    foot = (f'<footer><span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]} · <a href="tel:{C["phoneE164"]}">{C["phone"]}</a> · <a href="mailto:{C["email"]}">{C["email"]}</a></span>'
+    foot = (f'<footer><span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]} · KMKR {C["vat"]} · {C["address"]} · <a href="tel:{C["phoneE164"]}">{C["phone"]}</a> · <a href="mailto:{C["email"]}">{C["email"]}</a></span>'
             f'<span><a href="index.html" data-t="back"></a> · <a href="kaart.html" data-t="nm4"></a> · <a href="privacy.html" data-t="pp"></a></span></footer>')
     s = must_sub(r'<footer>.*?</footer>', lambda m: foot, s)
     s = fill_static(s, tx, lang)

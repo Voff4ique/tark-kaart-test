@@ -1,0 +1,9 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="../assets/fonts.css">
+<style>body{margin:0;width:1200px;height:630px;background:#f4efe8;color:#1c1917;font-family:Inter,sans-serif;position:relative;overflow:hidden}
+.bg{position:absolute;inset:0;background:radial-gradient(900px 500px at 105% -10%,#e9dfcf 0,transparent 60%),radial-gradient(700px 500px at -10% 110%,#e2d3b8 0,transparent 55%)}
+.w{position:absolute;left:84px;top:84px;right:84px;bottom:84px;display:flex;flex-direction:column;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:26px}.logo svg{width:132px;height:132px}.logo b{font:600 76px/1 Fraunces,serif;letter-spacing:-.01em;display:block}.logo i{font:600 22px/1 Inter;letter-spacing:.42em;color:#b45309;font-style:normal;display:block;margin-top:14px}
+h1{font:400 66px/1.08 Fraunces,serif;letter-spacing:-.02em;margin:0;max-width:980px}h1 em{color:#b45309;font-style:italic}
+.f{font:500 26px Inter;color:#57534e;display:flex;gap:34px}.f span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:#b45309;margin-right:12px}</style>
+<div class="bg"></div><div class="w"><div class="logo" id="lg"></div><h1>Loome ruumi, kus tahaks <em>elada</em>.</h1><div class="f"><span>Ostame</span><span>Renoveerime</span><span>Müüme</span><span>Tallinn</span></div></div>
+<script>fetch('../assets/icons/favicon.svg').then(r=>r.text()).then(t=>{lg.innerHTML=t+'<div><b>Tark</b><i>KINNISVARA</i></div>'})</script>

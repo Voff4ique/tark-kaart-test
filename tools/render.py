@@ -18,7 +18,7 @@ def main():
         # OG image
         pg.set_viewport_size({'width': 1200, 'height': 630})
         og = (ROOT / 'tools/og.html').read_text()
-        og = re.sub(r'<script>.*?</script>', lambda m: '<script>document.getElementById("lg").innerHTML=%s+\'<div><b>Tark</b><i>KINNISVARA</i></div>\'</script>' % json.dumps(svg), og, flags=re.S)
+        og = re.sub(r'<script>.*?</script>', lambda m: '<script>document.getElementById("lg").innerHTML=%s+\'<div><b>Tark Kinnisvara</b></div>\'</script>' % json.dumps(svg), og, flags=re.S)
         tmp = ROOT / 'tools/.og_run.html'; tmp.write_text(og)
         pg.goto(tmp.as_uri()); pg.wait_for_timeout(600); tmp.unlink()
         pg.screenshot(path=str(ROOT / 'assets/og-image.png'))

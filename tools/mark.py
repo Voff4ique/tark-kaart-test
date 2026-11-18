@@ -4,7 +4,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 import pathlib
 FONT=pathlib.Path(__file__).resolve().parent.parent/'assets/fonts/fraunces-latin-600-normal.woff2'
-def glyphs(size=25, cx=24, cy=24):
+def glyphs(size=27, cx=24, cy=24):
     f=TTFont(FONT);gs=f.getGlyphSet();cm=f.getBestCmap();upm=f['head'].unitsPerEm
     cap=getattr(f['OS/2'],'sCapHeight',1400) or 1400
     sc=size/upm
@@ -19,8 +19,8 @@ def glyphs(size=25, cx=24, cy=24):
     return t,k
 def mark_inner():
     t,k=glyphs()
-    return ('<rect x="2.5" y="2.5" width="43" height="43" rx="9" fill="#f4efe8" stroke="#1c1917" stroke-width="3"/>'
-            f'<path d="{t}" fill="#1c1917"/><path d="{k}" fill="#b45309"/>')
+    return ('<rect width="48" height="48" rx="10" fill="#1c1917"/>'
+            f'<path d="{t}" fill="#f4efe8"/><path d="{k}" fill="#f59e0b"/>')
 def mark_svg(cls='lm',style='',label=False):
     a=f' style="{style}"' if style else ''
     r=' role="img" aria-label="Tark Kinnisvara"' if label else ' aria-hidden="true"'

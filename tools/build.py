@@ -78,6 +78,7 @@ def common(s, lang, page, A):
             for l in LANGS)
         return f'<{m.group(1)} class="{cls}"{m.group(3)} aria-label="Language">{links}</{m.group(1)}>'
     s = must_sub(r'<(span|div) class="(lang|lg)"([^>]*)>(?:<button data-l="\w+">\w+</button>){3}</\1>', sw, s)
+    s = s.replace('<span class="lt"><b>Tark</b><i>KINNISVARA</i></span>', '<span class="lt"><b>Tark Kinnisvara</b></span>')
     # logo mark
     s = re.sub(r'<svg class="lm"( style="[^"]*")? viewBox="0 0 40 40"[^>]*>.*?</svg>',
                lambda m: mark_svg('lm', (m.group(1) or '')[8:-1]), s, flags=re.S)
@@ -279,7 +280,7 @@ nav{{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content
 main{{max-width:780px;margin:0 auto;padding:110px 6vw 60px}}h1{{font-size:clamp(34px,5vw,56px);line-height:1.05;margin:0}}h2{{font-size:24px;margin:34px 0 6px}}.lead{{color:#57534e;margin:10px 0 18px}}main a{{color:var(--ink)}}
 footer{{padding:30px 6vw;color:var(--mut);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}}footer a{{color:var(--mut)}}
 </style></head><body>
-<nav><a class="logo" href="index.html" aria-label="Tark Kinnisvara">{mark}<span class="lt"><b>Tark</b><i>KINNISVARA</i></span></a><div class="right"><span class="lang" aria-label="Language">{sw}</span><a href="index.html">{back}</a></div></nav>
+<nav><a class="logo" href="index.html" aria-label="Tark Kinnisvara">{mark}<span class="lt"><b>Tark Kinnisvara</b></span></a><div class="right"><span class="lang" aria-label="Language">{sw}</span><a href="index.html">{back}</a></div></nav>
 <main>{body}</main>
 <footer><span>{legal} · {regl} {reg}</span><span><a href="index.html">{back}</a></span></footer></body></html>"""
 

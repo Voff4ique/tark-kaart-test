@@ -14,6 +14,7 @@ h1{font-size:18px;margin:0 0 2px}small{color:#6b7280}
 .d{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #eee}
 #list{margin-top:8px}#list div{padding:6px 4px;border-bottom:1px solid #f0f0f0;cursor:pointer}#list div:hover{background:#f3f4f6}
 @media(max-width:800px){#app{grid-template-columns:1fr;grid-template-rows:42% 58%}aside{order:2}}
+.pb{display:grid;gap:6px;margin-top:10px}.pb a{display:block;text-align:center;padding:8px 12px;border-radius:999px;background:#1c1917;color:#fff!important;text-decoration:none;font-weight:600;font-size:13px}.pb a.bk{background:#f59e0b;color:#1c1917!important}
 </style></head><body><div id="app"><aside>
 <h1>Tark Kinnisvara</h1><small data-t="sub"></small><div class="lg" style="float:right"><button data-l="et">ET</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>
 <div class="seg" style="margin:12px 0"><button id="bs" class="on" data-t="b1"></button><button id="bm" data-t="b2"></button><button id="bh" data-t="b3"></button></div>
@@ -21,7 +22,7 @@ h1{font-size:18px;margin:0 0 2px}small{color:#6b7280}
 <div style="margin:10px 0 4px"><small><span data-t="yr"></span>: <b id="yl"></b></small><input id="yr" type="range" min="2016" max="2027" value="2027" style="width:100%"></div>
 <input type="search" id="q" placeholder="">
 <div id="dist"></div><div id="list"></div>
-<p><small data-t="foot"></small></p><p><a href="index.html" data-t="back"></a></p>
+<p><small data-t="foot"></small></p><p><a href="index.html" data-t="back"></a> · <a href="myygil.html" data-t="sale"></a></p>
 </aside><div id="map"></div></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -29,9 +30,10 @@ const DATA0=[{"a":"Mustamäe tee 147","s":"Müüdud","lat":59.411675,"lon":24.68
 const SM={'Müüdud':'Müüdud','Booked':'Müüdud','Töös':'Remondis','Ostetud':'Remondis','Ei Renoveeri':'Remondis','Valmis':'Müügil'};
 const DATA=DATA0.filter(o=>SM[o.s]).map((o,i)=>({...o,s:SM[o.s],id:i}));
 const ST={'Müüdud':['#6b7280','Müüdud'],'Remondis':['#f59e0b','Remondis'],'Müügil':['#16a34a','Müügil']};
-const TX={et:{sub:'Valminud ja töös olevad objektid Tallinnas',b1:'Satelliit',b2:'Kaart',b3:'Hübriid',yr:'Aasta (müüdud)',all:'kõik',until:'kuni ',search:'Otsi aadressi...',dist:'Linnaosad',foot:'Koordinaadid: Maa- ja Ruumiamet In-ADS. Pildid: Esri, OpenStreetMap.',back:'← Tagasi lugu juurde',approx:'asukoht ligikaudne',room:'tuba',st:{'Müüdud':'Müüdud','Remondis':'Remondis','Müügil':'Müügil'}},
-ru:{sub:'Готовые объекты и объекты в работе в Таллине',b1:'Спутник',b2:'Карта',b3:'Гибрид',yr:'Год (продано)',all:'все',until:'до ',search:'Поиск по адресу...',dist:'Районы',foot:'Координаты: Maa- ja Ruumiamet In-ADS. Снимки: Esri, OpenStreetMap.',back:'← Назад к истории',approx:'расположение примерное',room:'комн.',st:{'Müüdud':'Продано','Remondis':'В ремонте','Müügil':'В продаже'}},
-en:{sub:'Completed and in-progress properties in Tallinn',b1:'Satellite',b2:'Map',b3:'Hybrid',yr:'Year (sold)',all:'all',until:'until ',search:'Search address...',dist:'Districts',foot:'Coordinates: Maa- ja Ruumiamet In-ADS. Imagery: Esri, OpenStreetMap.',back:'← Back to the story',approx:'approximate location',room:'rooms',st:{'Müüdud':'Sold','Remondis':'In renovation','Müügil':'For sale'}}};
+const CAL='https://calendly.com/d/cvkh-3gd-q4p/tark-kinnisvara-korteritega-tutvumine';const KV={"Gonsiori tn 3": 3940837, "Liivamäe tn 3": 3932537, "Kuldnoka tee 10, Türisalu": 3943296, "Võru tn 16": 3940761, "Mustamäe tee 141": 3944458, "Lastekodu tn 10": 3946158};
+const TX={et:{sub:'Valminud ja töös olevad objektid Tallinnas',b1:'Satelliit',b2:'Kaart',b3:'Hübriid',yr:'Aasta (müüdud)',all:'kõik',until:'kuni ',search:'Otsi aadressi...',dist:'Linnaosad',foot:'Koordinaadid: Maa- ja Ruumiamet In-ADS. Pildid: Esri, OpenStreetMap.',back:'← Tagasi lugu juurde',approx:'asukoht ligikaudne',room:'tuba',sale:'Müügil olevad korterid',kv:'Vaata kuulutust KV.EE-s',book:'Broneeri vaatamine',st:{'Müüdud':'Müüdud','Remondis':'Remondis','Müügil':'Müügil'}},
+ru:{sub:'Готовые объекты и объекты в работе в Таллине',b1:'Спутник',b2:'Карта',b3:'Гибрид',yr:'Год (продано)',all:'все',until:'до ',search:'Поиск по адресу...',dist:'Районы',foot:'Координаты: Maa- ja Ruumiamet In-ADS. Снимки: Esri, OpenStreetMap.',back:'← Назад к истории',approx:'расположение примерное',room:'комн.',sale:'Квартиры в продаже',kv:'Объявление на KV.EE',book:'Записаться на просмотр',st:{'Müüdud':'Продано','Remondis':'В ремонте','Müügil':'В продаже'}},
+en:{sub:'Completed and in-progress properties in Tallinn',b1:'Satellite',b2:'Map',b3:'Hybrid',yr:'Year (sold)',all:'all',until:'until ',search:'Search address...',dist:'Districts',foot:'Coordinates: Maa- ja Ruumiamet In-ADS. Imagery: Esri, OpenStreetMap.',back:'← Back to the story',approx:'approximate location',room:'rooms',sale:'Flats for sale',kv:'View listing on KV.EE',book:'Book a viewing',st:{'Müüdud':'Sold','Remondis':'In renovation','Müügil':'For sale'}}};
 let LANG='';try{LANG=localStorage.getItem('lang')||''}catch(e){}if(!TX[LANG])LANG=(navigator.language||'et').slice(0,2);if(!TX[LANG])LANG='en';
 const map=L.map('map',{zoomControl:true}).setView([59.428,24.76],11);
 const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri, Maxar'});
@@ -42,7 +44,8 @@ function mode(m){[sat,lab,osm].forEach(l=>map.hasLayer(l)&&map.removeLayer(l));
  for(const [id,m2] of [['bs','s'],['bm','m'],['bh','h']])document.getElementById(id).classList.toggle('on',m===m2)}
 bs.onclick=()=>mode('s');bm.onclick=()=>mode('m');bh.onclick=()=>mode('h');mode('h');
 const on=new Set(Object.keys(ST));let yr=2027,qs='';
-function popHtml(o){const T=TX[LANG],n=o.rooms?parseInt(o.rooms):0;const bits=[T.st[o.s]];if(n)bits.push(n+' '+T.room);if(o.m2)bits.push(Math.round(o.m2)+' m²');if(o.sd&&o.s==='Müüdud')bits.push(o.sd);return `<b>${o.a}</b><br>${o.d}<br>${bits.join(' · ')}${o.q==='tapne_nr'?'':'<br><i>'+T.approx+'</i>'}`}
+function popHtml(o){const T=TX[LANG],n=o.rooms?parseInt(o.rooms):0;const bits=[T.st[o.s]];if(n)bits.push(n+' '+T.room);if(o.m2)bits.push(Math.round(o.m2)+' m²');if(o.sd&&o.s==='Müüdud')bits.push(o.sd);return `<b>${o.a}</b><br>${o.d}<br>${bits.join(' · ')}${o.q==='tapne_nr'?'':'<br><i>'+T.approx+'</i>'}${o.s==='Müügil'?saleBtns(o,T):''}`}
+function saleBtns(o,T){const id=KV[o.a];return '<div class="pb">'+(id?`<a href="https://www.kv.ee/${id}" target="_blank" rel="noopener">${T.kv}</a>`:'')+`<a class="bk" href="${CAL}" target="_blank" rel="noopener">${T.book}</a></div>`}
 const fmt=n=>n?Math.round(n).toLocaleString('et')+' €':'';
 const M={};DATA.forEach(o=>{const c=ST[o.s]||['#999',o.s];
  M[o.id]=L.circleMarker([o.lat,o.lon],{radius:o.s==='Müüdud'?6:9,color:'#fff',weight:2,fillColor:c[0],fillOpacity:.95})

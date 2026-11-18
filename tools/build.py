@@ -191,6 +191,7 @@ def apply_sale(s, name):
         e = {'a': o['a'], 's': 'Valmis', 'lat': o['lat'], 'lon': o['lon'], 'd': D_TABLE.get(o['d'], o['d']), 'sd': None}
         if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': o['m'], 'rooms': f"{o['r']}t", 'price': None})
         arr.append(e)
+    arr = [o for o in arr if o.get('a') not in SALE_DATA.get('remove_addr', [])]
     for x in SALE_DATA.get('sold_extra', []):
         e = {'a': x['a'], 's': 'Müüdud', 'lat': x['lat'], 'lon': x['lon'], 'd': x['d'], 'sd': x.get('sd')}
         if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': x.get('m2'), 'rooms': x.get('rooms'), 'price': None})

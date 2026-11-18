@@ -19,12 +19,12 @@ META = {
          "Finished, move-in-ready flats in Tallinn and nearby: prices, photos and viewing bookings."),
  },
  'kaart': {
-  'et': ("Tallinna objektide kaart — müüdud, remondis, müügil | Tark Kinnisvara",
-         "Interaktiivne satelliitkaart Tallinna objektidest: üle 200 müüdud, remondis ja müügil oleva korteri. Filtreeri staatuse ja aasta järgi."),
-  'ru': ("Карта объектов в Таллине — проданные, в ремонте, в продаже | Tark Kinnisvara",
-         "Интерактивная спутниковая карта объектов в Таллине: более 200 проданных, ремонтируемых и продаваемых квартир. Фильтры по статусу и году."),
-  'en': ("Map of our Tallinn properties — sold, in renovation, for sale | Tark Kinnisvara",
-         "Interactive satellite map of our Tallinn properties: over 200 sold, in-renovation and for-sale flats. Filter by status and year."),
+  'et': ("Tallinna objektide kaart — müüdud ja müügil | Tark Kinnisvara",
+         "Interaktiivne satelliitkaart Tallinna objektidest: üle 200 müüdud ja müügil oleva korteri. Filtreeri staatuse ja aasta järgi."),
+  'ru': ("Карта объектов в Таллине — проданные и в продаже | Tark Kinnisvara",
+         "Интерактивная спутниковая карта объектов в Таллине: более 200 проданных и продаваемых квартир. Фильтры по статусу и году."),
+  'en': ("Map of our Tallinn properties — sold and for sale | Tark Kinnisvara",
+         "Interactive satellite map of our Tallinn properties: over 200 sold and for-sale flats. Filter by status and year."),
  },
  'privacy': {
   'et': ("Privaatsuspoliitika | Tark Kinnisvara", "Kuidas Tark Kinnisvara OÜ töötleb isikuandmeid veebilehel tarkkinnisvara.ee ja kontaktvormi kaudu."),
@@ -121,7 +121,7 @@ LLMS = """# Tark Kinnisvara
 - [Home (Russian)]({base}/ru/)
 - [Home (English)]({base}/en/)
 - [Flats for sale]({base}/myygil.html): current listings with prices and photos ([RU]({base}/ru/myygil.html), [EN]({base}/en/myygil.html))
-- [Map of properties]({base}/kaart.html): interactive satellite map of sold, in-renovation and for-sale flats in Tallinn
+- [Map of properties]({base}/kaart.html): interactive satellite map of sold and for-sale flats in Tallinn
 - [Privacy policy]({base}/privacy.html)
 
 ## Contact

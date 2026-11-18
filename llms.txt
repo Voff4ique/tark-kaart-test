@@ -12,7 +12,7 @@
 - [Home (Russian)](https://tarkkinnisvara.ee/ru/)
 - [Home (English)](https://tarkkinnisvara.ee/en/)
 - [Flats for sale](https://tarkkinnisvara.ee/myygil.html): current listings with prices and photos ([RU](https://tarkkinnisvara.ee/ru/myygil.html), [EN](https://tarkkinnisvara.ee/en/myygil.html))
-- [Map of properties](https://tarkkinnisvara.ee/kaart.html): interactive satellite map of sold, in-renovation and for-sale flats in Tallinn
+- [Map of properties](https://tarkkinnisvara.ee/kaart.html): interactive satellite map of sold and for-sale flats in Tallinn
 - [Privacy policy](https://tarkkinnisvara.ee/privacy.html)
 
 ## Contact

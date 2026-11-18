@@ -78,7 +78,7 @@ def common(s, lang, page, A):
             for l in LANGS)
         return f'<{m.group(1)} class="{cls}"{m.group(3)} aria-label="Language">{links}</{m.group(1)}>'
     s = must_sub(r'<(span|div) class="(lang|lg)"([^>]*)>(?:<button data-l="\w+">\w+</button>){3}</\1>', sw, s)
-    s = s.replace('<span class="lt"><b>Tark</b><i>KINNISVARA</i></span>', '<span class="lt"><b>Tark Kinnisvara</b></span>')
+    s = s.replace('<span class="lt"><b>Tark</b><i>KINNISVARA</i></span>', '<span class="lt"><b>Tark<br>Kinnisvara</b></span>')
     # logo mark
     s = re.sub(r'<svg class="lm"( style="[^"]*")? viewBox="0 0 40 40"[^>]*>.*?</svg>',
                lambda m: mark_svg('lm', (m.group(1) or '')[8:-1]), s, flags=re.S)
@@ -197,7 +197,7 @@ def build_index(lang):
     s = must_rep('<div class="note" data-t="f_test"></div>', '', s)
     s = must_rep('<div class="ok" id="cok">', f'<div class="ok" id="cfail" style="background:#fee2e2;color:#7f1d1d;margin-bottom:10px"><span data-t="f_fail"></span> <a href="mailto:{C["email"]}">{C["email"]}</a></div><div class="ok" id="cok">', s)
     # footer
-    foot = (f'<footer><div><span class="logo" style="gap:9px">{mark_svg("lm", "width:26px;height:26px")}<span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]}</span></span>'
+    foot = (f'<footer><div><span class="logo" style="gap:9px">{mark_svg("lm", "width:34px;height:26px")}<span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]}</span></span>'
             f'<div class="fl"><span>KMKR {C["vat"]}</span><span>{C["address"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div></div>'
             f'<div><a href="privacy.html" data-t="lg"></a> · <a href="myygil.html" data-t="f4"></a> · <a href="kaart.html" data-t="n3"></a><small data-t="foot"></small></div></footer>')
     s = must_sub(r'<footer>.*?</footer>', lambda m: foot, s)
@@ -262,7 +262,7 @@ def build_kaart(lang):
     s = (SRC / 'kaart.src.html').read_text()
     s = common(s, lang, 'kaart', A)
     tx = node_tx(s)[lang]
-    s = must_rep('<h1>Tark Kinnisvara</h1>', f'<h1 style="display:flex;align-items:center;gap:9px">{mark_svg("lm", "width:28px;height:28px;flex:none")}Tark Kinnisvara</h1>', s)
+    s = must_rep('<h1>Tark Kinnisvara</h1>', f'<h1 style="display:flex;align-items:center;gap:9px">{mark_svg("lm", "width:37px;height:28px;flex:none")}Tark Kinnisvara</h1>', s)
     s = must_rep('<a href="myygil.html" data-t="sale"></a></p>', '<a href="myygil.html" data-t="sale"></a> · <a href="privacy.html" data-t="pp"></a></p>', s)
     s = fill_static(s, tx, lang)
     ld = {"@context": "https://schema.org", "@graph": [org_node(), website_node(lang), webpage_node(lang, 'kaart', tx, {"breadcrumb": {"@id": page_url(lang, 'kaart') + "#bc"}}),
@@ -275,12 +275,12 @@ PRIV_TPL = """<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><me
 :root{{--bg:#f4efe8;--ink:#1c1917;--mut:#78716c;--acc:#b45309}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}}
 h1,h2{{font-family:Fraunces,Georgia,serif;font-weight:400;letter-spacing:-.02em}}
 nav{{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 28px;background:rgba(244,239,232,.92);backdrop-filter:blur(10px);border-bottom:1px solid #0001}}
-.logo{{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}}.logo .lm{{width:36px;height:36px;flex:none}}.logo .lt{{display:flex;flex-direction:column;line-height:1}}.logo b{{font:600 24px/1 Fraunces,Georgia,serif;letter-spacing:-.01em}}.logo i{{font:600 9.5px/1 Inter,sans-serif;letter-spacing:.32em;margin-top:5px;font-style:normal;color:var(--acc)}}
-.right{{display:flex;align-items:center;gap:14px}}.lang a{{color:var(--ink);font:600 13px Inter;opacity:.55;text-decoration:none;padding:2px 4px}}.lang a.on{{opacity:1;text-decoration:underline}}.right>a{{color:var(--ink);font-size:14px;font-weight:500}}.lang{{white-space:nowrap;flex:none}}@media(max-width:430px){{nav{{gap:8px;padding:10px 12px}}.logo{{gap:8px}}.logo .lm{{width:32px;height:32px}}.logo b{{font-size:19px}}.right{{gap:8px;min-width:0}}.lang a,.lang button{{font-size:12px;padding:2px 3px}}.cta,.right>a:last-child{{padding:8px 12px;font-size:13px;line-height:1.15;text-align:center}}}}@media(max-width:400px){{nav{{padding:10px}}.logo b{{font-size:17px}}.logo .lm{{width:30px;height:30px}}.cta,.right>a:last-child{{padding:8px 11px;font-size:12.5px}}}}@media(max-width:350px){{nav{{padding:8px;gap:6px}}.right{{gap:6px}}.logo{{gap:6px}}.logo b{{font-size:16px}}.logo .lm{{width:28px;height:28px}}.lang a,.lang button{{font-size:11px;padding:2px 2px}}.cta,.right>a:last-child{{padding:7px 10px;font-size:12px}}}}@media (pointer:coarse){{.lang a,.lang button{{position:relative;display:inline-block}}.lang a::after,.lang button::after{{content:'';position:absolute;left:-4px;right:-4px;top:-12px;bottom:-12px}}details summary{{padding:11px 0}}.cinfo a,.card a,footer a,.foot a{{position:relative}}.cinfo a::after,.card a::after,footer a::after,.foot a::after{{content:'';position:absolute;left:-4px;right:-4px;top:-11px;bottom:-11px}}}}
+.logo{{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}}.logo .lm{{width:48px;height:36px;flex:none}}.logo .lt{{display:flex;flex-direction:column;line-height:1}}.logo b{{font:400 21px/.95 'DM Serif Display',Georgia,serif;letter-spacing:0;display:block}}.logo i{{font:600 9.5px/1 Inter,sans-serif;letter-spacing:.32em;margin-top:5px;font-style:normal;color:var(--acc)}}
+.right{{display:flex;align-items:center;gap:14px}}.lang a{{color:var(--ink);font:600 13px Inter;opacity:.55;text-decoration:none;padding:2px 4px}}.lang a.on{{opacity:1;text-decoration:underline}}.right>a{{color:var(--ink);font-size:14px;font-weight:500}}.lang{{white-space:nowrap;flex:none}}@media(max-width:430px){{nav{{gap:8px;padding:10px 12px}}.logo{{gap:8px}}.logo .lm{{width:42px;height:32px}}.logo b{{font-size:17px}}.right{{gap:8px;min-width:0}}.lang a,.lang button{{font-size:12px;padding:2px 3px}}.cta,.right>a:last-child{{padding:8px 12px;font-size:13px;line-height:1.15;text-align:center}}}}@media(max-width:400px){{nav{{padding:10px}}.logo b{{font-size:16px}}.logo .lm{{width:40px;height:30px}}.cta,.right>a:last-child{{padding:8px 11px;font-size:12.5px}}}}@media(max-width:350px){{nav{{padding:8px;gap:6px}}.right{{gap:6px}}.logo{{gap:6px}}.logo b{{font-size:15px}}.logo .lm{{width:37px;height:28px}}.lang a,.lang button{{font-size:11px;padding:2px 2px}}.cta,.right>a:last-child{{padding:7px 10px;font-size:12px}}}}@media (pointer:coarse){{.lang a,.lang button{{position:relative;display:inline-block}}.lang a::after,.lang button::after{{content:'';position:absolute;left:-4px;right:-4px;top:-12px;bottom:-12px}}details summary{{padding:11px 0}}.cinfo a,.card a,footer a,.foot a{{position:relative}}.cinfo a::after,.card a::after,footer a::after,.foot a::after{{content:'';position:absolute;left:-4px;right:-4px;top:-11px;bottom:-11px}}}}
 main{{max-width:780px;margin:0 auto;padding:110px 6vw 60px}}h1{{font-size:clamp(34px,5vw,56px);line-height:1.05;margin:0}}h2{{font-size:24px;margin:34px 0 6px}}.lead{{color:#57534e;margin:10px 0 18px}}main a{{color:var(--ink)}}
 footer{{padding:30px 6vw;color:var(--mut);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}}footer a{{color:var(--mut)}}
 </style></head><body>
-<nav><a class="logo" href="index.html" aria-label="Tark Kinnisvara">{mark}<span class="lt"><b>Tark Kinnisvara</b></span></a><div class="right"><span class="lang" aria-label="Language">{sw}</span><a href="index.html">{back}</a></div></nav>
+<nav><a class="logo" href="index.html" aria-label="Tark Kinnisvara">{mark}<span class="lt"><b>Tark<br>Kinnisvara</b></span></a><div class="right"><span class="lang" aria-label="Language">{sw}</span><a href="index.html">{back}</a></div></nav>
 <main>{body}</main>
 <footer><span>{legal} · {regl} {reg}</span><span><a href="index.html">{back}</a></span></footer></body></html>"""
 
@@ -301,6 +301,11 @@ def build_privacy(lang):
 def write_static():
     (ROOT / 'assets/icons').mkdir(parents=True, exist_ok=True)
     (ROOT / 'assets/icons/favicon.svg').write_text(standalone())
+    from mark import plain_mark, lockup_svg
+    (ROOT / 'assets/logo').mkdir(exist_ok=True)
+    (ROOT / 'assets/logo/mark.svg').write_text(plain_mark())
+    (ROOT / 'assets/logo/logo.svg').write_text(lockup_svg(False))
+    (ROOT / 'assets/logo/logo-white.svg').write_text(lockup_svg(True))
     (ROOT / 'robots.txt').write_text(f"""User-agent: *
 Allow: /
 
@@ -343,7 +348,7 @@ Sitemap: {BASE}/sitemap.xml
     t, d, b = K.NOTFOUND['et'], K.NOTFOUND['ru'], K.NOTFOUND['en']
     (ROOT / '404.html').write_text(f"""<!doctype html><html lang="et"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
 <title>404 — Tark Kinnisvara</title><style>body{{margin:0;background:#f4efe8;color:#1c1917;font:16px/1.6 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px}}h1{{font:400 44px Georgia,serif;margin:0 0 8px}}a{{color:#b45309;font-weight:600}}p{{margin:6px 0}}</style></head>
-<body><div>{mark_svg('lm', 'width:64px;height:64px', True)}<h1>404</h1><p>{t[0]} · {d[0]} · {b[0]}</p><p><a href="{BASE}/">{t[2]}</a> · <a href="{BASE}/ru/">{d[2]}</a> · <a href="{BASE}/en/">{b[2]}</a></p></div></body></html>""")
+<body><div>{mark_svg('lm', 'width:86px;height:64px', True)}<h1>404</h1><p>{t[0]} · {d[0]} · {b[0]}</p><p><a href="{BASE}/">{t[2]}</a> · <a href="{BASE}/ru/">{d[2]}</a> · <a href="{BASE}/en/">{b[2]}</a></p></div></body></html>""")
 
 if __name__ == '__main__':
     write_static()

@@ -1,6 +1,6 @@
 <!doctype html><html lang="et"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Tark Kinnisvara — uus kodu, uus lugu (test)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://server.arcgisonline.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' aria-hidden='true'%3E%3Crect width='40' height='40' rx='11' fill='%231c1917'/%3E%3Cpath d='M8 18.5 20 8.5l12 10' fill='none' stroke='%23f59e0b' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='18.4' y='17' width='3.2' height='16' rx='1.2' fill='%23f4efe8'/%3E%3Crect x='11' y='23.5' width='7' height='2.6' rx='1.3' fill='%23f4efe8' opacity='.0'/%3E%3C/svg%3E">
@@ -43,7 +43,7 @@ nav b{}.lang button{background:none;border:0;color:var(--ink);font:600 13px Inte
 footer{padding:40px 6vw;color:var(--mut);font-size:13px}
 html{scroll-padding-top:64px}.stick{top:0}.pin>.stick{height:100vh}
 #mapsec .stick{padding-top:0}.cap{top:calc(64px + 12vh)}.hud{top:calc(64px + 6vh)}
-.leaflet-container{background:#cdbfa6}.pt{transform:scale(var(--s,1))}.leaflet-tile{transition:opacity .2s linear}
+.leaflet-container{background:#17242b}.pt{transform:scale(var(--s,1))}.leaflet-tile{transition:none!important}
 .band{background:#1c1917;color:#f4efe8}.band .sec{padding:12vh 6vw}.band .k,.k2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#f59e0b;font-weight:600}
 .sec h2{font-size:clamp(30px,4.2vw,56px);line-height:1.08;margin:8px 0 18px}.lead{max-width:760px;font-size:18px;color:#44403c}.band .lead{color:#d6d3d1}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:28px}
@@ -175,7 +175,7 @@ function scene(p){
 }
 /* ===== map ===== */
 const FINE=matchMedia('(pointer:fine)').matches;
-const map=L.map('map',{zoomControl:true,attributionControl:true,zoomSnap:0,zoomDelta:.5,dragging:FINE,scrollWheelZoom:false,doubleClickZoom:FINE,touchZoom:false,keyboard:false,boxZoom:false});
+const map=L.map('map',{zoomControl:true,attributionControl:true,zoomSnap:0,zoomDelta:.5,dragging:FINE,scrollWheelZoom:false,doubleClickZoom:FINE,touchZoom:false,keyboard:false,boxZoom:false,fadeAnimation:false,zoomAnimation:false,markerZoomAnimation:false});
 map.zoomControl.setPosition('topright');
 const TO={maxZoom:19,keepBuffer:6,updateWhenIdle:false,updateWhenZooming:true,updateInterval:60};
 /* underlay: coarse z8 imagery stretched to any zoom, so there is always satellite under the sharp tiles */
@@ -186,7 +186,7 @@ map.setView([58.9,25.2],6.2);
 const COL={'Müüdud':'#9ca3af','Remondis':'#f59e0b','Müügil':'#16a34a'};
 const sold=PTS.filter(o=>o.s==='Müüdud').sort((a,b)=>(a.sd||'9')<(b.sd||'9')?-1:1), live=PTS.filter(o=>o.s!=='Müüdud');
 const mk=(o,r,pulse)=>{const m=L.marker([o.lat,o.lon],{icon:L.divIcon({className:'',html:`<div class="pt ${pulse?'pulse':''}" style="width:${r*2}px;height:${r*2}px;background:${COL[o.s]||'#999'}"></div>`,iconSize:[r*2,r*2]}),interactive:false});return m};
-sold.forEach(o=>{o._m=mk(o,6,false);o._on=false});const N=sold.length;
+const N=sold.length;
 const CAL='https://calendly.com/d/cvkh-3gd-q4p/tark-kinnisvara-korteritega-tutvumine';
 const SALE={'Gonsiori tn 3':[3,79,3940837],'Liivamäe tn 3':[3,66,3932537],'Kuldnoka tee 10, Türisalu':[3,82,3943296],'Võru tn 16':[4,80,3940761],'Mustamäe tee 141':[2,43,3944458],'Lastekodu tn 10':[3,53,3946158]};
 const popSale=o=>{const x=SALE[o.a],T=TX[LANG];return `<b>${o.a.replace(', Türisalu','')}</b><br>${x?x[0]+' '+T.rm+' · '+x[1]+' m²<br>':''}<div class="pb">${x?`<a href="https://www.kv.ee/${x[2]}" target="_blank" rel="noopener">${T.kv}</a>`:''}<a class="bk" href="${CAL}" target="_blank" rel="noopener">${T.book}</a></div>`};
@@ -197,14 +197,24 @@ $('resume').onclick=()=>{setFree(false);on(true)};
 const mc=map.getContainer();mc.addEventListener('pointerdown',()=>{if(FINE)setFree(true)});
 mc.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();setFree(true);const z=map.getZoom()-e.deltaY/120;map.setZoomAround(map.mouseEventToContainerPoint(e),clamp(z,5,18),{animate:false})}},{passive:false});
 map.on('zoom',()=>mc.style.setProperty('--s',clamp((map.getZoom()-5.5)/5,.3,1).toFixed(2)));
-function cam(p){if(free)return;let i=0;while(i<CAM.length-2&&p>CAM[i+1][0])i++;const A=CAM[i],B=CAM[i+1],t=ease(clamp((p-A[0])/(B[0]-A[0])));map.setView([lerp(A[1],B[1],t),lerp(A[2],B[2],t)],lerp(A[3],B[3],t),{animate:false})}
+/* sold dots: one canvas, drawn in the same frame as the camera (no DOM markers, no lag) */
+const cv=document.createElement('canvas');cv.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;z-index:450;pointer-events:none';mc.appendChild(cv);
+const cx=cv.getContext('2d');let cw=0,ch=0,dpr=1,curK=0,drew=0;
+function fit(){const r=mc.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2.5);cw=r.width;ch=r.height;cv.width=Math.round(cw*dpr);cv.height=Math.round(ch*dpr)}
+function drawDots(k){cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,cw,ch);const s=clamp((map.getZoom()-5.5)/5,.3,1),R=6*s,W=2*s;
+ for(let i=0;i<k;i++){const o=sold[i],q=map.latLngToContainerPoint([o.lat,o.lon]);if(q.x<-R||q.y<-R||q.x>cw+R||q.y>ch+R)continue;
+  cx.beginPath();cx.arc(q.x,q.y,R,0,6.2832);cx.fillStyle='#fff';cx.fill();cx.beginPath();cx.arc(q.x,q.y,Math.max(R-W,1),0,6.2832);cx.fillStyle=COL['Müüdud'];cx.fill()}}
+fit();map.on('move',()=>{drawDots(curK);drew=1});
+/* camera: same path Leaflet uses for pinch-zoom — tiles are scaled by CSS, levels are not reset, no flicker */
+let settleT;function moveCam(la,lo,z){map._move(L.latLng(la,lo),z,{pinch:true});clearTimeout(settleT);settleT=setTimeout(()=>map._moveEnd(true),160)}
+function cam(p){if(free)return;let i=0;while(i<CAM.length-2&&p>CAM[i+1][0])i++;const A=CAM[i],B=CAM[i+1],t=ease(clamp((p-A[0])/(B[0]-A[0])));moveCam(lerp(A[1],B[1],t),lerp(A[2],B[2],t),lerp(A[3],B[3],t))}
+const LG=document.querySelector('#mapsec .legend');
 function mapScene(p){
- cam(p);const tl=seg(p,0.0,.82),k=Math.min(N,Math.round(tl*N));
- sold.forEach((o,i)=>{const on=i<k;if(on!==o._on){o._on=on;on?o._m.addTo(map):map.removeLayer(o._m)}});
+ const tl=seg(p,0.0,.82),k=Math.min(N,Math.round(tl*N));curK=k;drew=0;cam(p);if(!drew)drawDots(k);
  const showLive=p>.84;live.forEach(o=>{if(showLive!==o._on){o._on=showLive;showLive?o._m.addTo(map):map.removeLayer(o._m)}});
  const it=sold[Math.max(0,k-1)];$('yr').textContent=it.sd?it.sd.slice(0,4):'2026';$('hn').textContent=TX[LANG].hn(k);
  $('ht').textContent=p<.04?TX[LANG].h0:p>.84?TX[LANG].h2:TX[LANG].h1;
- $('fin').style.opacity=ease(seg(p,.88,.97));$('bar2').style.width=(p*100)+'%';
+ $('fin').style.opacity=ease(seg(p,.88,.97));LG.style.opacity=1-ease(seg(p,.86,.93));$('bar2').style.width=(p*100)+'%';
 }
 /* warm the tile cache for the camera path so zooming never shows blank tiles */
 function warm(){if(navigator.connection&&navigator.connection.saveData)return;
@@ -212,11 +222,11 @@ function warm(){if(navigator.connection&&navigator.connection.saveData)return;
  add(6,57.5,59.8,23,27);add(7,58.4,59.7,23.8,26);add(8,58.7,59.7,24,25.8);add(9,58.9,59.7,24.2,25.6);add(10,59.2,59.65,24.45,25.1);add(11,59.33,59.55,24.55,25.05);add(12,59.38,59.5,24.62,24.97);add(13,59.395,59.47,24.64,24.92);
  const U=['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/','https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/'];
  const jobs=[];q.forEach(t=>U.forEach(u=>jobs.push(`${u}${t[0]}/${t[2]}/${t[1]}`)));let i=0;
- (function next(){for(let c=0;c<6&&i<jobs.length;c++){const im=new Image();im.onload=im.onerror=()=>{};im.src=jobs[i++]}if(i<jobs.length)setTimeout(next,120)})()}
-window.requestIdleCallback?requestIdleCallback(warm,{timeout:3000}):setTimeout(warm,800);
+ (function next(){for(let c=0;c<10&&i<jobs.length;c++){const im=new Image();im.onload=im.onerror=()=>{};im.src=jobs[i++]}if(i<jobs.length)setTimeout(next,90)})()}
+setTimeout(warm,250);
 function prog(id){const r=$(id).getBoundingClientRect(),h=r.height-innerHeight;return clamp(-r.top/h)}
 let tick=false;function on(f){if(tick&&!f)return;tick=true;requestAnimationFrame(()=>{tick=false;scene(prog('lugu'));mapScene(prog('kaart'))})}
-addEventListener('scroll',on,{passive:true});addEventListener('resize',()=>{map.invalidateSize();on()});
+addEventListener('scroll',on,{passive:true});addEventListener('resize',()=>{map.invalidateSize();fit();on(true)});
 // stats
 const cnt={};PTS.forEach(o=>cnt[o.s]=(cnt[o.s]||0)+1);
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting||e.target._d)return;e.target._d=1;const to=e.target.dataset.to,s=performance.now();(function f(t){const k=clamp((t-s)/1400);e.target.textContent=Math.round(to*ease(k));if(k<1)requestAnimationFrame(f)})(s)}),{threshold:.6});

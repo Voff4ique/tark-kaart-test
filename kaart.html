@@ -15,6 +15,7 @@ h1{font-size:18px;margin:0 0 2px}small{color:#6b7280}
 #list{margin-top:8px}#list div{padding:6px 4px;border-bottom:1px solid #f0f0f0;cursor:pointer}#list div:hover{background:#f3f4f6}
 @media(max-width:800px){#app{grid-template-columns:1fr;grid-template-rows:42% 58%}aside{order:2}}
 .pb{display:grid;gap:6px;margin-top:10px}.pb a{display:block;text-align:center;padding:8px 12px;border-radius:999px;background:#1c1917;color:#fff!important;text-decoration:none;font-weight:600;font-size:13px}.pb a.bk{background:#f59e0b;color:#1c1917!important}
+.leaflet-container{background:#cdbfa6}
 </style></head><body><div id="app"><aside>
 <h1>Tark Kinnisvara</h1><small data-t="sub"></small><div class="lg" style="float:right"><button data-l="et">ET</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>
 <div class="seg" style="margin:12px 0"><button id="bs" class="on" data-t="b1"></button><button id="bm" data-t="b2"></button><button id="bh" data-t="b3"></button></div>
@@ -35,12 +36,13 @@ const TX={et:{sub:'Valminud ja töös olevad objektid Tallinnas',b1:'Satelliit',
 ru:{sub:'Готовые объекты и объекты в работе в Таллине',b1:'Спутник',b2:'Карта',b3:'Гибрид',yr:'Год (продано)',all:'все',until:'до ',search:'Поиск по адресу...',dist:'Районы',foot:'Координаты: Maa- ja Ruumiamet In-ADS. Снимки: Esri, OpenStreetMap.',back:'← Назад к истории',approx:'расположение примерное',room:'комн.',sale:'Квартиры в продаже',kv:'Объявление на KV.EE',book:'Записаться на просмотр',st:{'Müüdud':'Продано','Remondis':'В ремонте','Müügil':'В продаже'}},
 en:{sub:'Completed and in-progress properties in Tallinn',b1:'Satellite',b2:'Map',b3:'Hybrid',yr:'Year (sold)',all:'all',until:'until ',search:'Search address...',dist:'Districts',foot:'Coordinates: Maa- ja Ruumiamet In-ADS. Imagery: Esri, OpenStreetMap.',back:'← Back to the story',approx:'approximate location',room:'rooms',sale:'Flats for sale',kv:'View listing on KV.EE',book:'Book a viewing',st:{'Müüdud':'Sold','Remondis':'In renovation','Müügil':'For sale'}}};
 let LANG='';try{LANG=localStorage.getItem('lang')||''}catch(e){}if(!TX[LANG])LANG=(navigator.language||'et').slice(0,2);if(!TX[LANG])LANG='en';
-const map=L.map('map',{zoomControl:true}).setView([59.428,24.76],11);
-const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri, Maxar'});
+const map=L.map('map',{zoomControl:true,zoomSnap:.25,zoomDelta:.5,wheelPxPerZoomLevel:100}).setView([59.428,24.76],11);
+const base=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:8,zIndex:1,keepBuffer:8});
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,zIndex:2,keepBuffer:6,updateWhenZooming:true,attribution:'Imagery © Esri, Maxar'});
 const lab=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:19});
 const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
-function mode(m){[sat,lab,osm].forEach(l=>map.hasLayer(l)&&map.removeLayer(l));
- if(m==='s')sat.addTo(map);if(m==='h'){sat.addTo(map);lab.addTo(map)}if(m==='m')osm.addTo(map);
+function mode(m){[base,sat,lab,osm].forEach(l=>map.hasLayer(l)&&map.removeLayer(l));
+ if(m==='s'){base.addTo(map);sat.addTo(map)}if(m==='h'){base.addTo(map);sat.addTo(map);lab.addTo(map)}if(m==='m')osm.addTo(map);
  for(const [id,m2] of [['bs','s'],['bm','m'],['bh','h']])document.getElementById(id).classList.toggle('on',m===m2)}
 bs.onclick=()=>mode('s');bm.onclick=()=>mode('m');bh.onclick=()=>mode('h');mode('h');
 const on=new Set(Object.keys(ST));let yr=2027,qs='';

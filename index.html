@@ -9,7 +9,8 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif}
 h1,h2,.big{font-family:Fraunces,Georgia,serif;font-weight:400;letter-spacing:-.02em;margin:0}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 28px;mix-blend-mode:difference;color:#fff}
-nav b{font-family:Fraunces,serif;font-size:20px;font-weight:600}nav a{color:#fff;text-decoration:none;margin-left:22px;font-size:14px}
+nav b{font-family:Fraunces,serif;font-size:20px;font-weight:600}.lang{margin-left:22px}.lang button{background:none;border:0;color:#fff;font:600 13px Inter;opacity:.55;cursor:pointer;padding:2px 4px}.lang button.on{opacity:1;text-decoration:underline}
+nav a{color:#fff;text-decoration:none;margin-left:22px;font-size:14px}
 .pin{height:420vh;position:relative}.pin>.stick{position:sticky;top:0;height:100vh;overflow:hidden}
 /* ---------- scene ---------- */
 #scene{background:linear-gradient(#e8e2d8,#d9d1c4)}
@@ -41,7 +42,7 @@ nav b{font-family:Fraunces,serif;font-size:20px;font-weight:600}nav a{color:#fff
 footer{padding:40px 6vw;color:var(--mut);font-size:13px}
 @media(max-width:700px){nav a{display:none}.cap{top:14vh}}
 </style></head><body>
-<nav><b>Tark Kinnisvara</b><div><a href="#lugu">Lugu</a><a href="#kaart">Kaart</a><a href="kaart.html">Täiskaart</a></div></nav>
+<nav><b>Tark Kinnisvara</b><div><a href="#lugu" data-t="n1"></a><a href="#kaart" data-t="n2"></a><a href="kaart.html" data-t="n3"></a><span class="lang"><button data-l="et">ET</button><button data-l="ru">RU</button><button data-l="en">EN</button></span></div></nav>
 
 <section class="pin" id="lugu"><div class="stick" id="scene">
 <svg id="room" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
@@ -65,31 +66,31 @@ footer{padding:40px 6vw;color:var(--mut);font-size:13px}
  <!-- window -->
  <g id="win"><rect x="1000" y="120" width="360" height="400" fill="#bfe0f2"/><rect x="1000" y="120" width="360" height="400" fill="none" stroke="#f8f6f2" stroke-width="16"/><path d="M1180 120V520M1000 320H1360" stroke="#f8f6f2" stroke-width="10"/><path d="M1000 520L760 900H1180Z" id="sunbeam" fill="url(#sun)" opacity="0"/></g>
  <!-- scaffolding / tools (stage 2) -->
- <g id="tools" opacity="0" stroke="#111" stroke-width="6"><path d="M180 880V300M420 880V300M180 420H420M180 600H420M180 300L420 420M180 420L420 600" stroke="#c2410c"/><rect x="450" y="760" width="120" height="110" fill="#e7e5e4" stroke="#78716c"/><path d="M470 760V730H550V760" fill="none" stroke="#78716c"/></g>
+ <g id="tools" opacity="0" stroke="#111" stroke-width="6" transform="translate(780 0)"><path d="M180 880V300M420 880V300M180 420H420M180 600H420M180 300L420 420M180 420L420 600" stroke="#c2410c"/><rect x="450" y="760" width="120" height="110" fill="#e7e5e4" stroke="#78716c"/><path d="M470 760V730H550V760" fill="none" stroke="#78716c"/></g>
  <!-- furniture (stage 3) -->
  <g id="sofa" opacity="0"><rect x="160" y="640" width="520" height="140" rx="26" fill="#6b7a6a"/><rect x="190" y="580" width="460" height="110" rx="24" fill="#7d8c7b"/><rect x="140" y="610" width="60" height="170" rx="22" fill="#5a6859"/><rect x="640" y="610" width="60" height="170" rx="22" fill="#5a6859"/><rect x="200" y="780" width="20" height="40" fill="#3f3a35"/><rect x="620" y="780" width="20" height="40" fill="#3f3a35"/><rect x="250" y="615" width="110" height="80" rx="16" fill="#e8c79a"/></g>
  <g id="rug" opacity="0"><ellipse cx="560" cy="835" rx="420" ry="46" fill="#e9e1d3"/></g>
  <g id="lamp" opacity="0"><path d="M880 300V760" stroke="#2b2622" stroke-width="8"/><path d="M820 300h120l-26-90h-68z" fill="#f4d28a"/><rect x="850" y="758" width="60" height="12" fill="#2b2622"/></g>
- <g id="art" opacity="0"><rect x="360" y="200" width="200" height="260" fill="#f8f6f2" stroke="#2b2622" stroke-width="6"/><circle cx="460" cy="300" r="56" fill="#b45309"/><path d="M380 440c40-80 70-60 100-110s40 40 70 60v60z" fill="#6b7a6a"/></g>
+ <g id="art" opacity="0"><rect x="725" y="355" width="140" height="190" fill="#f8f6f2" stroke="#2b2622" stroke-width="6"/><circle cx="795" cy="425" r="38" fill="#b45309"/><path d="M740 530c30-60 50-45 75-80s30 30 45 40v40z" fill="#6b7a6a"/></g>
  <g id="plant" opacity="0"><rect x="1230" y="740" width="70" height="90" rx="8" fill="#d7c7ad"/><path d="M1265 740c-60-120-30-210 0-250 10 90 50 130 0 250M1265 740c40-90 90-120 70-210-60 50-85 110-70 210" fill="#5c7a55"/></g>
  <!-- table, 'sold' tag -->
- <g id="tag" opacity="0"><rect x="1180" y="560" width="300" height="80" rx="40" fill="#1c1917"/><text x="1330" y="611" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="30" font-weight="600">VALMIS · MÜÜGIL</text></g>
+ <g id="tag" opacity="0"><rect x="1090" y="560" width="440" height="80" rx="40" fill="#1c1917"/><text x="1310" y="609" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="26" font-weight="600" id="tagt">VALMIS · MÜÜGIL</text></g>
 </svg>
-<div class="cap"><div class="k" id="ck">01 · Ostame</div><h2 id="ch">Ostame korteri kiiresti.</h2><p id="cp">Hindame 24 tunni jooksul. Ka remonti vajavad ja keerulised korterid.</p><p class="ru" id="cr">Покупаем квартиры быстро — даже требующие ремонта.</p></div>
-<div class="hint">LIIGUTA ALLA ↓</div><div class="bar" id="bar"></div>
+<div class="cap"><div class="k" id="ck"></div><h2 id="ch"></h2><p id="cp"></p></div>
+<div class="hint" data-t="hint"></div><div class="bar" id="bar"></div>
 </div></section>
 
 <section class="pin" id="kaart" style="height:520vh"><div class="stick" id="mapsec">
 <div id="map"></div>
-<div class="hud"><div class="t" id="ht">Meie lugu Tallinnas</div><div class="yr" id="yr">2019</div><div class="n" id="hn">0 müüdud objekti</div></div>
-<div class="legend"><div><i style="background:#9ca3af"></i>Müüdud</div><div><i style="background:#f59e0b"></i>Remondis</div><div><i style="background:#16a34a"></i>Müügil</div></div>
-<div class="fin" id="fin"><h2>Iga punkt on üks uus kodu.</h2><p>Vaata kõiki objekte, filtreeri staatuse ja aasta järgi.</p><a class="btn" href="kaart.html">Ava täiskaart →</a></div>
+<div class="hud"><div class="t" id="ht"></div><div class="yr" id="yr">2019</div><div class="n" id="hn"></div></div>
+<div class="legend"><div><i style="background:#9ca3af"></i><span data-t="lg1"></span></div><div><i style="background:#f59e0b"></i><span data-t="lg2"></span></div><div><i style="background:#16a34a"></i><span data-t="lg3"></span></div></div>
+<div class="fin" id="fin"><h2 data-t="f1"></h2><p data-t="f2"></p><a class="btn" href="kaart.html" data-t="f3"></a></div>
 <div class="bar" id="bar2"></div>
 </div></section>
 
 <section class="sec"><div class="stats">
-<div><b id="s1">0</b>müüdud korterit</div><div><b id="s2">0</b>objekti remondis</div><div><b id="s3">0</b>linnaosa</div><div><b id="s4">2019</b>alates aastast</div></div></section>
-<footer>Testversioon · Pildid: Esri, Maxar · Koordinaadid: Maa- ja Ruumiamet · Tark Kinnisvara OÜ</footer>
+<div><b id="s1">0</b><span data-t="st1"></span></div><div><b id="s2">0</b><span data-t="st2"></span></div><div><b id="s3">0</b><span data-t="st3"></span></div><div><b id="s4">2019</b><span data-t="st4"></span></div></div></section>
+<footer data-t="foot"></footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -98,12 +99,23 @@ const SM={'Müüdud':'Müüdud','Booked':'Müüdud','Töös':'Remondis','Ostetud
 const $=id=>document.getElementById(id), clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2, lerp=(a,b,t)=>a+(b-a)*t;
 const seg=(p,a,b)=>clamp((p-a)/(b-a));
 /* ===== scene ===== */
-const S=[["01 · Ostame","Ostame korteri kiiresti.","Hindame 24 tunni jooksul. Ka remonti vajavad ja keerulised korterid.","Покупаем квартиры быстро — даже требующие ремонта."],
-["02 · Remont","Üks meeskond. Üks hind.","Projekt, ehitus, viimistlus ja järelevalve — meie enda käe all.","Проект, ремонт и отделка — под одним управлением."],
-["03 · Valmis","Skandinaavia stiil. Valmis kolimiseks.","Valmis kodu garantiiga, mille võid kohe ostmisega üle võtta.","Готовый дом в скандинавском стиле."]];
+const TX={
+et:{n1:"Lugu",n2:"Kaart",n3:"Täiskaart",hint:"LIIGUTA ALLA ↓",lg1:"Müüdud",lg2:"Remondis",lg3:"Müügil",f1:"Iga punkt on üks uus kodu.",f2:"Vaata kõiki objekte, filtreeri staatuse ja aasta järgi.",f3:"Ava täiskaart →",st1:"müüdud korterit",st2:"objekti remondis",st3:"linnaosa",st4:"alates aastast",foot:"Testversioon · Pildid: Esri, Maxar · Koordinaadid: Maa- ja Ruumiamet · Tark Kinnisvara OÜ",
+ h0:"Meie lugu Tallinnas",h1:"Müüdud objektid aasta kaupa",h2:"Täna",hn:n=>n+" müüdud objekti",tag:"VALMIS · MÜÜGIL",title:"Tark Kinnisvara — uus kodu, uus lugu (test)",
+ S:[["01 · Valmis","Loome ruumi, kus tahaks elada.","Hingame uue hinge elamispindadesse."],["02 · Meeskond","Üks meeskond. Üks eesmärk.","Projekt, ehitus ja viimistlus on meie käes."],["03 · Ostame","Ostame teie korteri kiiresti.","Hindame 24 tunniga. Ostame kõik korterid — ka remonti vajavad ja pärandiks saadud."]]},
+ru:{n1:"История",n2:"Карта",n3:"Полная карта",hint:"ЛИСТАЙТЕ ВНИЗ ↓",lg1:"Продано",lg2:"В ремонте",lg3:"В продаже",f1:"Каждая точка — новый дом.",f2:"Смотрите все объекты, фильтруйте по статусу и году.",f3:"Открыть полную карту →",st1:"проданных квартир",st2:"объектов в ремонте",st3:"районов",st4:"с года",foot:"Тестовая версия · Снимки: Esri, Maxar · Координаты: Maa- ja Ruumiamet · Tark Kinnisvara OÜ",
+ h0:"Наша история в Таллине",h1:"Проданные объекты по годам",h2:"Сегодня",hn:n=>"Продано объектов: "+n,tag:"ГОТОВО · В ПРОДАЖЕ",title:"Tark Kinnisvara — новый дом, новая история (тест)",
+ S:[["01 · Готово","Создаём пространство, где хочется жить.","Вдыхаем новую душу в жилые пространства."],["02 · Команда","Одна команда. Одна цель.","Проект, строительство и отделка — в наших руках."],["03 · Выкупаем","Купим вашу квартиру быстро.","Оценим за 24 часа. Покупаем любые квартиры — и требующие ремонта, и полученные в наследство."]]},
+en:{n1:"Story",n2:"Map",n3:"Full map",hint:"SCROLL ↓",lg1:"Sold",lg2:"In renovation",lg3:"For sale",f1:"Every dot is a new home.",f2:"Browse all properties and filter by status and year.",f3:"Open full map →",st1:"flats sold",st2:"in renovation",st3:"districts",st4:"since",foot:"Test version · Imagery: Esri, Maxar · Coordinates: Maa- ja Ruumiamet · Tark Kinnisvara OÜ",
+ h0:"Our story in Tallinn",h1:"Sold properties by year",h2:"Today",hn:n=>n+" properties sold",tag:"READY · FOR SALE",title:"Tark Kinnisvara — a new home, a new story (test)",
+ S:[["01 · Ready","We create spaces you want to live in.","We breathe new life into homes."],["02 · Team","One team. One goal.","Design, construction and finishing — all in our hands."],["03 · We buy","We buy your flat — fast.","Valuation within 24 hours. Any flat — even one that needs renovation or was inherited."]]}};
+let LANG='et';try{LANG=localStorage.getItem('lang')||''}catch(e){}if(!TX[LANG])LANG=(navigator.language||'et').slice(0,2);if(!TX[LANG])LANG='en';
+function setLang(l){LANG=l;try{localStorage.setItem('lang',l)}catch(e){}document.documentElement.lang=l;document.title=TX[l].title;
+ document.querySelectorAll('[data-t]').forEach(e=>e.textContent=TX[l][e.dataset.t]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+ $('tagt').textContent=TX[l].tag;lastStage=-1;on(true)}
 let lastStage=-1;
 function scene(p){
- const a=seg(p,.22,.5),b=seg(p,.5,.78),w=ease(seg(p,.46,.7)),f=ease(seg(p,.6,.82));
+ const P=p;p=1-p;const w=ease(seg(p,.46,.7)),f=ease(seg(p,.6,.82));
  $('paint').setAttribute('width',1600*w);$('wallFin').setAttribute('opacity',w>.99?1:0);
  $('cracks').setAttribute('opacity',1-ease(seg(p,.3,.55)));
  $('floorFin').setAttribute('opacity',f);$('floorRough').setAttribute('opacity',1-f);
@@ -113,8 +125,8 @@ function scene(p){
  $('sunbeam').setAttribute('opacity',ease(seg(p,.84,.97))*.8);$('tag').setAttribute('opacity',ease(seg(p,.9,1)));
  // slow camera zoom
  $('room').style.transform=`scale(${lerp(1.18,1,ease(p))}) translateY(${lerp(-20,0,p)}px)`;
- const st=p<.34?0:p<.7?1:2;if(st!==lastStage){lastStage=st;[ 'ck','ch','cp','cr'].forEach((id,i)=>$(id).textContent=S[st][i])}
- $('bar').style.width=(p*100)+'%';
+ const st=P<.34?0:P<.7?1:2;if(st!==lastStage){lastStage=st;['ck','ch','cp'].forEach((id,i)=>$(id).textContent=TX[LANG].S[st][i])}
+ $('bar').style.width=(P*100)+'%';
 }
 /* ===== map ===== */
 const map=L.map('map',{zoomControl:false,attributionControl:true,zoomSnap:0,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false,keyboard:false,boxZoom:false});
@@ -135,16 +147,16 @@ function mapScene(p){
  cam(p);const tl=seg(p,.28,.82),T=lerp(T0,T1,tl);let n=0;
  sold.forEach(o=>{const on=o._t<=T;if(on)n++;if(on!==o._on){o._on=on;on?o._m.addTo(map):map.removeLayer(o._m)}});
  const showLive=p>.84;live.forEach(o=>{if(showLive!==o._on){o._on=showLive;showLive?o._m.addTo(map):map.removeLayer(o._m)}});
- $('yr').textContent=p<.28?'2019':fmtYear(T);$('hn').textContent=`${n} müüdud objekti`;
- $('ht').textContent=p<.28?'Meie lugu Tallinnas':p>.84?'Täna':'Müüdud objektid aasta kaupa';
+ $('yr').textContent=p<.28?'2019':fmtYear(T);$('hn').textContent=TX[LANG].hn(n);
+ $('ht').textContent=p<.28?TX[LANG].h0:p>.84?TX[LANG].h2:TX[LANG].h1;
  $('fin').style.opacity=ease(seg(p,.88,.97));$('bar2').style.width=(p*100)+'%';
 }
 function prog(id){const r=$(id).getBoundingClientRect(),h=r.height-innerHeight;return clamp(-r.top/h)}
-let tick=false;function on(){if(tick)return;tick=true;requestAnimationFrame(()=>{tick=false;scene(prog('lugu'));mapScene(prog('kaart'))})}
+let tick=false;function on(f){if(tick&&!f)return;tick=true;requestAnimationFrame(()=>{tick=false;scene(prog('lugu'));mapScene(prog('kaart'))})}
 addEventListener('scroll',on,{passive:true});addEventListener('resize',()=>{map.invalidateSize();on()});
 // stats
 const cnt={};PTS.forEach(o=>cnt[o.s]=(cnt[o.s]||0)+1);
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting||e.target._d)return;e.target._d=1;const to=e.target.dataset.to,s=performance.now();(function f(t){const k=clamp((t-s)/1400);e.target.textContent=Math.round(to*ease(k));if(k<1)requestAnimationFrame(f)})(s)}),{threshold:.6});
 [['s1',cnt['Müüdud']||0],['s2',cnt['Remondis']||0],['s3',new Set(PTS.map(o=>o.d)).size]].forEach(([id,v])=>{$(id).dataset.to=v;io.observe($(id))});
-on();map.whenReady(on);
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));setLang(LANG);map.whenReady(()=>on(true));
 </script></body></html>

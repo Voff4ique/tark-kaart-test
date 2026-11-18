@@ -7,6 +7,7 @@
 aside{overflow:auto;padding:16px;border-right:1px solid #e5e7eb;background:#fff}
 h1{font-size:18px;margin:0 0 2px}small{color:#6b7280}
 .row{display:flex;align-items:center;gap:8px;margin:5px 0;cursor:pointer}.dot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #0003}
+.lg button{background:none;border:0;font:600 12px Inter,sans-serif;color:#9ca3af;cursor:pointer}.lg button.on{color:#111;text-decoration:underline}
 .row b{margin-left:auto}input[type=search]{width:100%;padding:8px;border:1px solid #d1d5db;border-radius:8px;margin:10px 0}
 .seg button{padding:6px 10px;border:1px solid #d1d5db;background:#f9fafb;cursor:pointer}.seg button.on{background:#111827;color:#fff}
 .seg button:first-child{border-radius:8px 0 0 8px}.seg button:last-child{border-radius:0 8px 8px 0}
@@ -14,13 +15,13 @@ h1{font-size:18px;margin:0 0 2px}small{color:#6b7280}
 #list{margin-top:8px}#list div{padding:6px 4px;border-bottom:1px solid #f0f0f0;cursor:pointer}#list div:hover{background:#f3f4f6}
 @media(max-width:800px){#app{grid-template-columns:1fr;grid-template-rows:42% 58%}aside{order:2}}
 </style></head><body><div id="app"><aside>
-<h1>Tark Kinnisvara</h1><small>Valminud ja töös olevad objektid Tallinnas</small>
-<div class="seg" style="margin:12px 0"><button id="bs" class="on">Satelliit</button><button id="bm">Kaart</button><button id="bh">Hübriid</button></div>
+<h1>Tark Kinnisvara</h1><small data-t="sub"></small><div class="lg" style="float:right"><button data-l="et">ET</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+<div class="seg" style="margin:12px 0"><button id="bs" class="on" data-t="b1"></button><button id="bm" data-t="b2"></button><button id="bh" data-t="b3"></button></div>
 <div id="leg"></div>
-<div style="margin:10px 0 4px"><small>Aasta (müüdud): <b id="yl">kõik</b></small><input id="yr" type="range" min="2019" max="2027" value="2027" style="width:100%"></div>
-<input type="search" id="q" placeholder="Otsi aadressi...">
+<div style="margin:10px 0 4px"><small><span data-t="yr"></span>: <b id="yl"></b></small><input id="yr" type="range" min="2019" max="2027" value="2027" style="width:100%"></div>
+<input type="search" id="q" placeholder="">
 <div id="dist"></div><div id="list"></div>
-<p><small>Koordinaadid: Maa- ja Ruumiamet In-ADS. Pildid: Esri, OpenStreetMap.</small></p>
+<p><small data-t="foot"></small></p><p><a href="index.html" data-t="back"></a></p>
 </aside><div id="map"></div></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -28,6 +29,10 @@ const DATA0=[{"id":0,"a":"Mustamäe 147-51","s":"Müüdud","lat":59.411675,"lon"
 const SM={'Müüdud':'Müüdud','Booked':'Müüdud','Töös':'Remondis','Ostetud':'Remondis','Ei Renoveeri':'Remondis','Valmis':'Müügil'};
 const DATA=DATA0.filter(o=>SM[o.s]).map((o,i)=>({...o,s:SM[o.s],id:i}));
 const ST={'Müüdud':['#6b7280','Müüdud'],'Remondis':['#f59e0b','Remondis'],'Müügil':['#16a34a','Müügil']};
+const TX={et:{sub:'Valminud ja töös olevad objektid Tallinnas',b1:'Satelliit',b2:'Kaart',b3:'Hübriid',yr:'Aasta (müüdud)',all:'kõik',until:'kuni ',search:'Otsi aadressi...',dist:'Linnaosad',foot:'Koordinaadid: Maa- ja Ruumiamet In-ADS. Pildid: Esri, OpenStreetMap.',back:'← Tagasi lugu juurde',approx:'asukoht ligikaudne',sold:'Müüdud: ',st:{'Müüdud':'Müüdud','Remondis':'Remondis','Müügil':'Müügil'}},
+ru:{sub:'Готовые объекты и объекты в работе в Таллине',b1:'Спутник',b2:'Карта',b3:'Гибрид',yr:'Год (продано)',all:'все',until:'до ',search:'Поиск по адресу...',dist:'Районы',foot:'Координаты: Maa- ja Ruumiamet In-ADS. Снимки: Esri, OpenStreetMap.',back:'← Назад к истории',approx:'расположение примерное',sold:'Продано: ',st:{'Müüdud':'Продано','Remondis':'В ремонте','Müügil':'В продаже'}},
+en:{sub:'Completed and in-progress properties in Tallinn',b1:'Satellite',b2:'Map',b3:'Hybrid',yr:'Year (sold)',all:'all',until:'until ',search:'Search address...',dist:'Districts',foot:'Coordinates: Maa- ja Ruumiamet In-ADS. Imagery: Esri, OpenStreetMap.',back:'← Back to the story',approx:'approximate location',sold:'Sold: ',st:{'Müüdud':'Sold','Remondis':'In renovation','Müügil':'For sale'}}};
+let LANG='';try{LANG=localStorage.getItem('lang')||''}catch(e){}if(!TX[LANG])LANG=(navigator.language||'et').slice(0,2);if(!TX[LANG])LANG='en';
 const map=L.map('map',{zoomControl:true}).setView([59.428,24.76],11);
 const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri, Maxar'});
 const lab=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:19});
@@ -40,20 +45,22 @@ const on=new Set(Object.keys(ST));let yr=2027,qs='';
 const fmt=n=>n?Math.round(n).toLocaleString('et')+' €':'';
 const M={};DATA.forEach(o=>{const c=ST[o.s]||['#999',o.s];
  M[o.id]=L.circleMarker([o.lat,o.lon],{radius:o.s==='Müüdud'?6:9,color:'#fff',weight:2,fillColor:c[0],fillOpacity:.95})
- .bindPopup(`<b>${o.a}</b><br>${o.d}<br>${c[1]}${o.m2?' · '+o.m2+' m²':''}${o.rooms?' · '+o.rooms:''}${o.price?'<br>'+fmt(o.price):''}${o.sd?'<br>Müüdud: '+o.sd:''}${o.q==='tapne_nr'?'':'<br><i>asukoht ligikaudne</i>'}`)});
+ .bindPopup(`<b>${o.a}</b><br>${o.d}<br>${TX[LANG].st[o.s]||c[1]}${o.m2?' · '+o.m2+' m²':''}${o.rooms?' · '+o.rooms:''}${o.price?'<br>'+fmt(o.price):''}${o.sd?'<br>'+TX[LANG].sold+o.sd:''}${o.q==='tapne_nr'?'':'<br><i>'+TX[LANG].approx+'</i>'}`)});
 function vis(o){if(!on.has(o.s))return false;if(o.s==='Müüdud'&&yr<2027&&(!o.sd||+o.sd.slice(0,4)>yr))return false;
  return !qs||o.a.toLowerCase().includes(qs)||o.d.toLowerCase().includes(qs)}
 function render(){const cnt={},dc={};let n=0,list=[];
  DATA.forEach(o=>{const v=vis(o);if(v){M[o.id].addTo(map);n++;dc[o.d]=(dc[o.d]||0)+1;list.push(o)}else map.removeLayer(M[o.id])});
  DATA.forEach(o=>cnt[o.s]=(cnt[o.s]||0)+1);
- leg.innerHTML=Object.entries(ST).filter(([k])=>cnt[k]).map(([k,v])=>`<label class=row><input type=checkbox data-k="${k}" ${on.has(k)?'checked':''}><span class=dot style="background:${v[0]}"></span>${v[1]}<b>${cnt[k]}</b></label>`).join('');
- dist.innerHTML='<h4 style="margin:12px 0 4px">Linnaosad ('+n+')</h4>'+Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class=d><span>${k}</span><b>${v}</b></div>`).join('');
+ leg.innerHTML=Object.entries(ST).filter(([k])=>cnt[k]).map(([k,v])=>`<label class=row><input type=checkbox data-k="${k}" ${on.has(k)?'checked':''}><span class=dot style="background:${v[0]}"></span>${TX[LANG].st[k]}<b>${cnt[k]}</b></label>`).join('');
+ dist.innerHTML='<h4 style="margin:12px 0 4px">'+TX[LANG].dist+' ('+n+')</h4>'+Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class=d><span>${k}</span><b>${v}</b></div>`).join('');
  list.sort((a,b)=>(a.s==='Müüdud')-(b.s==='Müüdud'));
  document.getElementById('list').innerHTML=list.filter(o=>o.s!=='Müüdud').slice(0,40).map(o=>`<div data-i="${o.id}"><span class=dot style="display:inline-block;background:${ST[o.s][0]}"></span> ${o.a} <small>${o.d}</small></div>`).join('')}
 leg.onchange=e=>{e.target.checked?on.add(e.target.dataset.k):on.delete(e.target.dataset.k);render()};
-document.getElementById('yr').oninput=e=>{yr=+e.target.value;yl.textContent=yr>=2027?'kõik':'kuni '+yr;render()};
+document.getElementById('yr').oninput=e=>{yr=+e.target.value;setYl();render()};
 document.getElementById('q').oninput=e=>{qs=e.target.value.toLowerCase();render()};
 document.getElementById('list').onclick=e=>{const d=e.target.closest('[data-i]');if(!d)return;const o=DATA.find(x=>x.id==d.dataset.i);map.setView([o.lat,o.lon],17);M[o.id].openPopup()};
-render();
+function setYl(){yl.textContent=yr>=2027?TX[LANG].all:TX[LANG].until+yr}
+function setLang(l){LANG=l;try{localStorage.setItem('lang',l)}catch(e){}document.documentElement.lang=l;document.querySelectorAll('[data-t]').forEach(e=>e.textContent=TX[l][e.dataset.t]);document.getElementById('q').placeholder=TX[l].search;document.querySelectorAll('.lg button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));setYl();DATA.forEach(o=>{const c=ST[o.s];M[o.id].setPopupContent(`<b>${o.a}</b><br>${o.d}<br>${TX[l].st[o.s]}${o.m2?' · '+o.m2+' m²':''}${o.rooms?' · '+o.rooms:''}${o.sd?'<br>'+TX[l].sold+o.sd:''}${o.q==='tapne_nr'?'':'<br><i>'+TX[l].approx+'</i>'}`)});render()}
+document.querySelectorAll('.lg button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));setLang(LANG);
 /* REAL-TIME (Supabase): channel('projects').on('postgres_changes',{event:'*',table:'projects'},p=>{...update o.s; M[o.id].setStyle({fillColor:ST[o.s][0]}); render()}) */
 </script></body></html>

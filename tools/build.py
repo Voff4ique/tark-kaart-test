@@ -191,6 +191,10 @@ def apply_sale(s, name):
         e = {'a': o['a'], 's': 'Valmis', 'lat': o['lat'], 'lon': o['lon'], 'd': D_TABLE.get(o['d'], o['d']), 'sd': None}
         if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': o['m'], 'rooms': f"{o['r']}t", 'price': None})
         arr.append(e)
+    for x in SALE_DATA.get('sold_extra', []):
+        e = {'a': x['a'], 's': 'Müüdud', 'lat': x['lat'], 'lon': x['lon'], 'd': x['d'], 'sd': x.get('sd')}
+        if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': x.get('m2'), 'rooms': x.get('rooms'), 'price': None})
+        arr.append(e)
     s = s[:i] + json.dumps(arr, ensure_ascii=False) + s[i + end:]
     s = s.replace("'Booked':'Müüdud',", '')
     return s, arr
@@ -220,7 +224,7 @@ def sale_cards(lang, tx):
             f'<article class="sc"><a class="sph" href="https://www.kv.ee/{o["id"]}" target="_blank" rel="noopener">'
             f'<img src="{photo(o["p"][0])}" alt="{esc(name)}, {o["r"]} {esc(tx["rm"])}, {o["m"]} m²" width="800" height="600" '
             f'{"" if n < 2 else "loading=\"lazy\" "}decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility=\'hidden\'">'
-            f'<span class="badge">{esc(tx["badge"])}</span></a><div class="sb"><h3>{esc(name)}</h3><div class="dist">{esc(dn[dgrp(o["d"])])}</div>'
+            f'<span class="badge">{esc(tx["badge"])}</span></a><div class="sb"><h3>{esc(name)}</h3><div class="dist">{esc(o.get("loc") or dn[dgrp(o["d"])])}</div>'
             f'<div class="price">{fmt_n(o["pr"])} €<small>{fmt_n(o["pm"])} €/m²</small></div><div class="facts">{facts}</div>'
             f'<div class="btns"><a href="https://www.kv.ee/{o["id"]}" target="_blank" rel="noopener">{esc(tx["kv"])}</a>'
             f'<a class="bk" href="{cal}" target="_blank" rel="noopener">{esc(tx["book"])}</a></div></div></article>')
@@ -233,9 +237,9 @@ def offers_ld(lang, page, name):
         items.append({"@type": "ListItem", "position": i + 1, "item": {
             "@type": "Offer", "url": f"https://www.kv.ee/{o['id']}", "price": o['pr'], "priceCurrency": "EUR",
             "availability": "https://schema.org/InStock", "seller": {"@id": BASE + "/#org"},
-            "itemOffered": {"@type": "Apartment", "name": nm, "numberOfRooms": o['r'],
+            "itemOffered": {"@type": "House" if o.get("type") == "suvila" else "Apartment", "name": nm, "numberOfRooms": o['r'],
                             "floorSize": {"@type": "QuantitativeValue", "value": o['m'], "unitCode": "MTK"},
-                            "address": {"@type": "PostalAddress", "streetAddress": nm, "addressLocality": "Tallinn", "addressRegion": "Harju maakond", "addressCountry": "EE"},
+                            "address": {"@type": "PostalAddress", "streetAddress": nm, "addressLocality": o.get("loc") or "Tallinn", "addressRegion": "Harju maakond", "addressCountry": "EE"},
                             "image": photo(o['p'][0], 46)}}})
     return {"@type": "ItemList", "@id": page_url(lang, page) + "#list", "name": name, "numberOfItems": len(items), "itemListElement": items}
 

@@ -4,6 +4,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from playwright.sync_api import sync_playwright
 from mark import standalone, mark_svg, plain_mark
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+import sys
+OUT = ROOT / sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv else ROOT
 def main():
     with sync_playwright() as p:
         b = p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--no-sandbox'])
@@ -24,7 +26,7 @@ def main():
         pg.screenshot(path=str(ROOT / 'assets/og-image.png'))
         # pre-render sale cards
         for lang, pre in (('et', ''), ('ru', 'ru/'), ('en', 'en/')):
-            f = ROOT / pre / 'myygil.html'
+            f = OUT / pre / 'myygil.html'
             pg.goto(f.as_uri()); pg.wait_for_selector('#g .card'); 
             inner = pg.eval_on_selector('#g', 'e=>e.innerHTML')
             s = f.read_text()

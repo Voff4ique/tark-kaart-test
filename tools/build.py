@@ -132,12 +132,12 @@ def head_block(lang, page, A, jsonld):
 def org_node():
     n = {"@type": ["RealEstateAgent", "Organization"], "@id": BASE + "/#org", "name": C['name'], "legalName": C['legalName'],
          "url": BASE + "/", "logo": {"@type": "ImageObject", "url": BASE + "/assets/icons/icon-512.png", "width": 512, "height": 512},
-         "image": BASE + "/assets/og-image.png", "email": C['email'], "telephone": C['phoneE164'],
+         "image": BASE + "/assets/og-image.png", "telephone": C['phoneE164'],
          "identifier": {"@type": "PropertyValue", "propertyID": "Estonian Business Registry code", "value": C['regCode']},
          "address": {"@type": "PostalAddress", "addressLocality": "Tallinn", "addressCountry": "EE"},
          "areaServed": [{"@type": "City", "name": "Tallinn"}, {"@type": "AdministrativeArea", "name": "Harju maakond"}],
          "knowsLanguage": ["et", "ru", "en"],
-         "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "telephone": C['phoneE164'], "email": C['email'],
+         "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "telephone": C['phoneE164'],
                           "availableLanguage": ["Estonian", "Russian", "English"]}}
     if C.get('address'):
         n['address'] = {"@type": "PostalAddress", "streetAddress": "Käämo tee 8", "addressLocality": "Harkujärve küla, Harku vald",
@@ -189,16 +189,16 @@ def build_index(lang):
     s = must_rep('<section class="pin" id="lugu">', f'<h1 class="sr">{esc(K.H1[lang])}</h1>\n<section class="pin" id="lugu">', s)
     # contact block
     cinfo = (f'<div class="cinfo"><b>{C["legalName"]}</b><span><span data-t="reg"></span> {C["regCode"]}</span>'
-             f'<span>KMKR {C["vat"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div><div class="cinfo"><span>{C["address"]}</span></div>')
+             f'<span>KMKR {C["vat"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a></div><div class="cinfo"><span>{C["address"]}</span></div>')
     s = must_rep('<p class="lead" data-t="c_p"></p>\n<form id="cf" novalidate>', f'<p class="lead" data-t="c_p"></p>\n{cinfo}\n<form id="cf" novalidate>', s)
     s = must_rep('<label class="chk"><input type="checkbox" name="ok" required><span data-t="f_consent"></span></label>',
                  '<label class="hp" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>'
                  '<label class="chk"><input type="checkbox" name="ok" required><span><span data-t="f_consent"></span> <a href="privacy.html" data-t="f_pp"></a></span></label>', s)
     s = must_rep('<div class="note" data-t="f_test"></div>', '', s)
-    s = must_rep('<div class="ok" id="cok">', f'<div class="ok" id="cfail" style="background:#fee2e2;color:#7f1d1d;margin-bottom:10px"><span data-t="f_fail"></span> <a href="mailto:{C["email"]}">{C["email"]}</a></div><div class="ok" id="cok">', s)
+    s = must_rep('<div class="ok" id="cok">', f'<div class="ok" id="cfail" style="background:#fee2e2;color:#7f1d1d;margin-bottom:10px"><span data-t="f_fail"></span> <a href="tel:{C["phoneE164"]}">{C["phone"]}</a></div><div class="ok" id="cok">', s)
     # footer
     foot = (f'<footer><div><span class="logo" style="gap:9px">{mark_svg("lm", "width:34px;height:26px")}<span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]}</span></span>'
-            f'<div class="fl"><span>KMKR {C["vat"]}</span><span>{C["address"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a><a href="mailto:{C["email"]}">{C["email"]}</a></div></div>'
+            f'<div class="fl"><span>KMKR {C["vat"]}</span><span>{C["address"]}</span><a href="tel:{C["phoneE164"]}">{C["phone"]}</a></div></div>'
             f'<div><a href="privacy.html" data-t="lg"></a> · <a href="myygil.html" data-t="f4"></a> · <a href="kaart.html" data-t="n3"></a><small data-t="foot"></small></div></footer>')
     s = must_sub(r'<footer>.*?</footer>', lambda m: foot, s)
     # form handler
@@ -236,7 +236,7 @@ def build_myygil(lang):
     s = common(s, lang, 'myygil', A)
     tx = node_tx(s)[lang]
     OBJ = json.loads(re.search(r'const OBJ=(\[.*?\]);\n', s, re.S).group(1))
-    foot = (f'<footer><span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]} · KMKR {C["vat"]} · {C["address"]} · <a href="tel:{C["phoneE164"]}">{C["phone"]}</a> · <a href="mailto:{C["email"]}">{C["email"]}</a></span>'
+    foot = (f'<footer><span>{C["legalName"]} · <span data-t="reg"></span> {C["regCode"]} · KMKR {C["vat"]} · {C["address"]} · <a href="tel:{C["phoneE164"]}">{C["phone"]}</a> </span>'
             f'<span><a href="index.html" data-t="back"></a> · <a href="kaart.html" data-t="nm4"></a> · <a href="privacy.html" data-t="pp"></a></span></footer>')
     s = must_sub(r'<footer>.*?</footer>', lambda m: foot, s)
     s = fill_static(s, tx, lang)
@@ -341,7 +341,7 @@ Sitemap: {BASE}/sitemap.xml
             pr = {'index': '1.0', 'myygil': '0.9', 'kaart': '0.6', 'privacy': '0.2'}[page]
             urls.append(f'<url><loc>{page_url(lang, page)}</loc><lastmod>{C["modified"]}</lastmod><priority>{pr}</priority>{alts}</url>')
     (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + '\n'.join(urls) + '\n</urlset>\n')
-    (ROOT / 'llms.txt').write_text(K.LLMS.format(base=BASE, reg=C['regCode'], mail=C['email'], tel=C['phone']))
+    (ROOT / 'llms.txt').write_text(K.LLMS.format(base=BASE, reg=C['regCode'], tel=C['phone']))
     (ROOT / 'manifest.webmanifest').write_text(json.dumps({
         "name": "Tark Kinnisvara", "short_name": "Tark", "start_url": "./", "display": "browser", "background_color": "#f4efe8", "theme_color": "#f4efe8",
         "icons": [{"src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=1))

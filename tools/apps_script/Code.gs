@@ -3,7 +3,7 @@
  * Deploy: Web app, Execute as "Me", Who has access "Anyone".
  * The site POSTs JSON as text/plain (no CORS preflight) and reads {ok:true|false}.
  */
-var TO = 'office.kinnisvara@gmail.com';
+var TO = 'OFFICE_INBOX@example.com'; // set the real recipient inside the Apps Script project (not stored in the public repo)
 var MAX = {name: 120, phone: 40, email: 160, addr: 200, msg: 4000};
 
 function clean_(v, n) { return String(v == null ? '' : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, n); }

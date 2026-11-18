@@ -12,10 +12,11 @@
 - [Home (Russian)](https://tarkkinnisvara.ee/ru/)
 - [Home (English)](https://tarkkinnisvara.ee/en/)
 - [Flats for sale](https://tarkkinnisvara.ee/myygil.html): current listings with prices and photos ([RU](https://tarkkinnisvara.ee/ru/myygil.html), [EN](https://tarkkinnisvara.ee/en/myygil.html))
+- [Our story year by year](https://tarkkinnisvara.ee/lugu.html): the same map animated by year
 - [Map of properties](https://tarkkinnisvara.ee/kaart.html): interactive satellite map of sold and for-sale flats in Tallinn
 - [Privacy policy](https://tarkkinnisvara.ee/privacy.html)
 
 ## Contact
-- E-mail: office.kinnisvara@gmail.com
+- Contact form: https://tarkkinnisvara.ee/#kontakt
 - Phone: +372 5563 3416
 - Company: Tark Kinnisvara OÜ, registry code 12950600, Tallinn, Estonia

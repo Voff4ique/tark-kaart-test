@@ -26,6 +26,14 @@ META = {
   'en': ("Map of our Tallinn properties — sold and for sale | Tark Kinnisvara",
          "Interactive satellite map of our Tallinn properties: over 200 sold and for-sale flats. Filter by status and year."),
  },
+ 'lugu': {
+  'et': ("Meie lugu aastate kaupa — Tallinna kaart | Tark Kinnisvara",
+         "Vaata, kuidas meie müüdud kodud on aastate jooksul Tallinna kaardile lisandunud: korterite ost, renoveerimine ja müük 2016–2026."),
+  'ru': ("Наша история по годам — карта Таллина | Tark Kinnisvara",
+         "Смотрите, как проданные нами квартиры год за годом появлялись на карте Таллина: покупка, ремонт и продажа с 2016 по 2026 год."),
+  'en': ("Our story year by year — Tallinn map | Tark Kinnisvara",
+         "See how the homes we sold appeared on the Tallinn map year after year: buying, renovating and selling from 2016 to 2026."),
+ },
  'privacy': {
   'et': ("Privaatsuspoliitika | Tark Kinnisvara", "Kuidas Tark Kinnisvara OÜ töötleb isikuandmeid veebilehel tarkkinnisvara.ee ja kontaktvormi kaudu."),
   'ru': ("Политика конфиденциальности | Tark Kinnisvara", "Как Tark Kinnisvara OÜ обрабатывает персональные данные на сайте tarkkinnisvara.ee и через контактную форму."),
@@ -44,61 +52,66 @@ H1 = {
 EXTRA_TX = {
  'index': {
   'et': dict(title=META['index']['et'][0], foot="Pildid: Esri, Maxar · Koordinaadid: Maa- ja Ruumiamet",
-             c_p="Jäta oma andmed — vastame esimesel võimalusel. Võid ka helistada või kirjutada otse.",
+             c_p="Jäta oma andmed — vastame esimesel võimalusel. Võid ka helistada.",
              f_consent="Nõustun oma andmete töötlemisega päringule vastamiseks.", f_pp="Privaatsuspoliitika",
-             f_fail="Saatmine ebaõnnestus. Palun kirjuta meile otse:", f_sending="Saadan…", reg="Reg. nr", lg="Privaatsuspoliitika"),
+             f_fail="Saatmine ebaõnnestus. Palun helista meile:", f_sending="Saadan…", reg="Reg. nr", lg="Privaatsuspoliitika"),
   'ru': dict(title=META['index']['ru'][0], foot="Снимки: Esri, Maxar · Координаты: Maa- ja Ruumiamet",
-             c_p="Оставьте данные — ответим при первой возможности. Можно также позвонить или написать напрямую.",
+             c_p="Оставьте данные — ответим при первой возможности. Можно также позвонить.",
              f_consent="Согласен(на) на обработку моих данных для ответа на запрос.", f_pp="Политика конфиденциальности",
-             f_fail="Отправить не удалось. Пожалуйста, напишите нам напрямую:", f_sending="Отправляю…", reg="Рег. номер", lg="Политика конфиденциальности"),
+             f_fail="Отправить не удалось. Пожалуйста, позвоните нам:", f_sending="Отправляю…", reg="Рег. номер", lg="Политика конфиденциальности"),
   'en': dict(title=META['index']['en'][0], foot="Imagery: Esri, Maxar · Coordinates: Maa- ja Ruumiamet",
-             c_p="Leave your details — we'll reply as soon as we can. You can also call or write to us directly.",
+             c_p="Leave your details — we'll reply as soon as we can. You can also call us.",
              f_consent="I agree to my data being processed to answer my enquiry.", f_pp="Privacy policy",
-             f_fail="Sending failed. Please write to us directly:", f_sending="Sending…", reg="Reg. no.", lg="Privacy policy"),
+             f_fail="Sending failed. Please call us:", f_sending="Sending…", reg="Reg. no.", lg="Privacy policy"),
  },
  'myygil': {
   'et': dict(reg="Reg. nr", pp="Privaatsuspoliitika"),
   'ru': dict(reg="Рег. номер", pp="Политика конфиденциальности"),
   'en': dict(reg="Reg. no.", pp="Privacy policy"),
  },
+ 'lugu': {
+  'et': dict(title=META['lugu']['et'][0], foot="Pildid: Esri, Maxar · Koordinaadid: Maa- ja Ruumiamet", back="← Avalehele"),
+  'ru': dict(title=META['lugu']['ru'][0], foot="Снимки: Esri, Maxar · Координаты: Maa- ja Ruumiamet", back="← На главную"),
+  'en': dict(title=META['lugu']['en'][0], foot="Imagery: Esri, Maxar · Coordinates: Maa- ja Ruumiamet", back="← Home"),
+ },
  'kaart': {
-  'et': dict(pp="Privaatsuspoliitika"), 'ru': dict(pp="Политика конфиденциальности"), 'en': dict(pp="Privacy policy"),
+  'et': dict(pp="Privaatsuspoliitika", ly="Aastate kaupa"), 'ru': dict(pp="Политика конфиденциальности", ly="По годам"), 'en': dict(pp="Privacy policy", ly="Year by year"),
  },
 }
 
 # ---------------------------------------------------------------- privacy policy
 def privacy_html(lang, C, addr_line):
     """Returns (main inner html). Own text for Tark Kinnisvara OÜ."""
-    name, reg, mail, tel = C['legalName'], C['regCode'], C['email'], C['phone']
+    name, reg, tel = C['legalName'], C['regCode'], C['phone']
     ctrl_extra = f"<br>{addr_line}" if addr_line else ""
     if lang == 'et':
         return f"""<h1>Privaatsuspoliitika</h1><p class="lead">Kehtib alates 18.11.2026.</p>
-<h2>1. Vastutav töötleja</h2><p>{name}, registrikood {reg}{ctrl_extra}<br>E-post: <a href="mailto:{mail}">{mail}</a> · telefon: <a href="tel:{C['phoneE164']}">{tel}</a></p>
+<h2>1. Vastutav töötleja</h2><p>{name}, registrikood {reg}{ctrl_extra}<br>Telefon: <a href="tel:{C['phoneE164']}">{tel}</a> · <a href="index.html#kontakt">kontaktvorm</a></p>
 <h2>2. Milliseid andmeid me töötleme</h2><p>Kontaktvormi kaudu: nimi, telefon, e-posti aadress, korteri aadress (kui märgid) ja sõnum. Anna meile ainult andmeid, mida soovid meiega jagada. Veebilehe külastamisel võib majutusteenuse pakkuja töödelda sinu IP-aadressi ja brauseri tehnilisi andmeid serveri logides turvalisuse ja töökindluse tagamiseks.</p>
 <h2>3. Eesmärk ja õiguslik alus</h2><p>Kasutame andmeid selleks, et vastata sinu päringule, teha korteri hinnang või pakkumine ning leppida kokku vaatamine. Õiguslik alus on sinu nõusolek (isikuandmete kaitse üldmääruse art 6 lg 1 p a) ja lepingu sõlmimiseks tehtavad toimingud sinu taotlusel (art 6 lg 1 p b).</p>
 <h2>4. Säilitamine</h2><p>Säilitame päringu andmeid kuni 12 kuud pärast viimast kontakti. Kui sõlmime lepingu, säilitame andmeid seadusest tulenevate tähtaegade jooksul (nt raamatupidamisseadus).</p>
 <h2>5. Kellele andmeid edastame</h2><p>Päringud jõuavad meieni e-posti teel (Google, Gmail). Me ei müü ega anna andmeid edasi turundamiseks. Andmeid võime edastada ainult siis, kui see on vajalik sinu päringu täitmiseks (nt notar, pank, hindaja – sinu kokkuleppel) või seadusest tulenevalt. Teenusepakkujad võivad töödelda andmeid väljaspool Euroopa Majanduspiirkonda sobivate kaitsemeetmetega (nt Euroopa Komisjoni tüüptingimused).</p>
 <h2>6. Kolmandate osapoolte sisu ja küpsised</h2><p>Meie veebileht ei kasuta küpsiseid ega jälgimis- või analüütikavahendeid. Kaardi vaatamisel laadib sinu brauser kaardipildid Esri serveritest ning müügil olevate korterite lehel fotod portaalist KV.EE; selle käigus saavad need teenused sinu IP-aadressi. Vaatamise broneerimine ja KV.EE kuulutused avanevad nende pakkujate lehtedel (Calendly, KV.EE), kus kehtivad nende endi privaatsuspoliitikad. Fondid ja skriptid laadime oma serverist.</p>
-<h2>7. Sinu õigused</h2><p>Sul on õigus tutvuda oma andmetega, nõuda nende parandamist või kustutamist, piirata töötlemist, esitada vastuväiteid, saada andmed edasikantaval kujul ning võtta nõusolek igal ajal tagasi. Selleks kirjuta aadressile <a href="mailto:{mail}">{mail}</a>. Kui leiad, et töötleme andmeid valesti, võid pöörduda Andmekaitse Inspektsiooni poole (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
+<h2>7. Sinu õigused</h2><p>Sul on õigus tutvuda oma andmetega, nõuda nende parandamist või kustutamist, piirata töötlemist, esitada vastuväiteid, saada andmed edasikantaval kujul ning võtta nõusolek igal ajal tagasi. Selleks kasuta veebilehe <a href="index.html#kontakt">kontaktvormi</a> või helista numbril <a href="tel:{C['phoneE164']}">{tel}</a>. Kui leiad, et töötleme andmeid valesti, võid pöörduda Andmekaitse Inspektsiooni poole (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
 <h2>8. Muudatused</h2><p>Uuendame seda poliitikat vajaduse korral; kehtiv versioon on alati sellel lehel.</p>"""
     if lang == 'ru':
         return f"""<h1>Политика конфиденциальности</h1><p class="lead">Действует с 18.11.2026.</p>
-<h2>1. Ответственный за обработку</h2><p>{name}, регистрационный код {reg}{ctrl_extra}<br>E-mail: <a href="mailto:{mail}">{mail}</a> · телефон: <a href="tel:{C['phoneE164']}">{tel}</a></p>
+<h2>1. Ответственный за обработку</h2><p>{name}, регистрационный код {reg}{ctrl_extra}<br>Телефон: <a href="tel:{C['phoneE164']}">{tel}</a> · <a href="index.html#kontakt">контактная форма</a></p>
 <h2>2. Какие данные мы обрабатываем</h2><p>Через контактную форму: имя, телефон, адрес e-mail, адрес квартиры (если укажете) и сообщение. Сообщайте только те данные, которыми хотите поделиться. При посещении сайта хостинг-провайдер может обрабатывать ваш IP-адрес и технические данные браузера в журналах сервера для обеспечения безопасности и стабильной работы.</p>
 <h2>3. Цель и правовое основание</h2><p>Мы используем данные, чтобы ответить на ваш запрос, оценить квартиру или сделать предложение и согласовать просмотр. Правовое основание: ваше согласие (Общий регламент по защите данных, ст. 6 п. 1 «a») и действия по вашей просьбе до заключения договора (ст. 6 п. 1 «b»).</p>
 <h2>4. Срок хранения</h2><p>Данные запроса хранятся до 12 месяцев после последнего контакта. Если мы заключим договор, данные хранятся в течение сроков, установленных законом (например, законом о бухгалтерском учёте).</p>
 <h2>5. Кому мы передаём данные</h2><p>Запросы поступают к нам по электронной почте (Google, Gmail). Мы не продаём данные и не передаём их для рекламы. Данные могут передаваться только если это необходимо для выполнения вашего запроса (например, нотариусу, банку, оценщику — по договорённости с вами) или по закону. Поставщики услуг могут обрабатывать данные за пределами Европейской экономической зоны при наличии надлежащих гарантий (например, стандартные договорные условия Европейской комиссии).</p>
 <h2>6. Сторонний контент и cookies</h2><p>Наш сайт не использует cookies, средства отслеживания и аналитики. При просмотре карты ваш браузер загружает изображения карты с серверов Esri, а на странице квартир в продаже — фотографии с портала KV.EE; при этом эти сервисы получают ваш IP-адрес. Запись на просмотр и объявления KV.EE открываются на сайтах этих поставщиков (Calendly, KV.EE), где действуют их собственные политики конфиденциальности. Шрифты и скрипты мы загружаем с собственного сервера.</p>
-<h2>7. Ваши права</h2><p>Вы вправе получить доступ к своим данным, потребовать их исправления или удаления, ограничить обработку, возразить против неё, получить данные в переносимом формате и в любой момент отозвать согласие. Для этого напишите на <a href="mailto:{mail}">{mail}</a>. Если вы считаете, что мы обрабатываем данные неправильно, можно обратиться в Инспекцию по защите данных Эстонии (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
+<h2>7. Ваши права</h2><p>Вы вправе получить доступ к своим данным, потребовать их исправления или удаления, ограничить обработку, возразить против неё, получить данные в переносимом формате и в любой момент отозвать согласие. Для этого воспользуйтесь <a href="index.html#kontakt">контактной формой</a> на сайте или позвоните по номеру <a href="tel:{C['phoneE164']}">{tel}</a>. Если вы считаете, что мы обрабатываем данные неправильно, можно обратиться в Инспекцию по защите данных Эстонии (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
 <h2>8. Изменения</h2><p>При необходимости мы обновляем эту политику; действующая версия всегда на этой странице.</p>"""
     return f"""<h1>Privacy policy</h1><p class="lead">Effective from 18 November 2026.</p>
-<h2>1. Controller</h2><p>{name}, registry code {reg}{ctrl_extra}<br>E-mail: <a href="mailto:{mail}">{mail}</a> · phone: <a href="tel:{C['phoneE164']}">{tel}</a></p>
+<h2>1. Controller</h2><p>{name}, registry code {reg}{ctrl_extra}<br>Phone: <a href="tel:{C['phoneE164']}">{tel}</a> · <a href="index.html#kontakt">contact form</a></p>
 <h2>2. What data we process</h2><p>Through the contact form: name, phone number, e-mail address, flat address (if you provide it) and your message. Please share only what you want us to know. When you visit the site, the hosting provider may process your IP address and browser technical data in server logs to keep the service secure and reliable.</p>
 <h2>3. Purpose and legal basis</h2><p>We use the data to answer your enquiry, value your flat or make an offer, and arrange a viewing. The legal basis is your consent (GDPR Art. 6(1)(a)) and steps taken at your request before entering into a contract (Art. 6(1)(b)).</p>
 <h2>4. Retention</h2><p>We keep enquiry data for up to 12 months after the last contact. If we enter into a contract, we keep data for the periods required by law (for example, accounting law).</p>
 <h2>5. Who receives the data</h2><p>Enquiries reach us by e-mail (Google, Gmail). We do not sell data or pass it on for marketing. We may share data only where needed to fulfil your enquiry (for example a notary, bank or valuer — with your agreement) or where the law requires. Service providers may process data outside the European Economic Area under appropriate safeguards (for example the European Commission's standard contractual clauses).</p>
 <h2>6. Third-party content and cookies</h2><p>This website uses no cookies and no tracking or analytics tools. When you view the map, your browser loads map imagery from Esri servers, and on the flats-for-sale page it loads photos from the KV.EE portal; those services receive your IP address. Viewing bookings and KV.EE listings open on those providers' sites (Calendly, KV.EE), which have their own privacy policies. Fonts and scripts are served from our own server.</p>
-<h2>7. Your rights</h2><p>You may access your data, ask us to correct or delete it, restrict or object to processing, receive it in a portable format, and withdraw consent at any time. Write to <a href="mailto:{mail}">{mail}</a>. If you believe we are processing data unlawfully you can complain to the Estonian Data Protection Inspectorate (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
+<h2>7. Your rights</h2><p>You may access your data, ask us to correct or delete it, restrict or object to processing, receive it in a portable format, and withdraw consent at any time. Use the <a href="index.html#kontakt">contact form</a> on this website or call <a href="tel:{C['phoneE164']}">{tel}</a>. If you believe we are processing data unlawfully you can complain to the Estonian Data Protection Inspectorate (<a href="https://www.aki.ee" rel="noopener">aki.ee</a>, info@aki.ee).</p>
 <h2>8. Changes</h2><p>We update this policy when needed; the current version is always on this page.</p>"""
 
 PRIVACY_BACK = {'et': "← Avalehele", 'ru': "← На главную", 'en': "← Home"}
@@ -121,11 +134,12 @@ LLMS = """# Tark Kinnisvara
 - [Home (Russian)]({base}/ru/)
 - [Home (English)]({base}/en/)
 - [Flats for sale]({base}/myygil.html): current listings with prices and photos ([RU]({base}/ru/myygil.html), [EN]({base}/en/myygil.html))
+- [Our story year by year]({base}/lugu.html): the same map animated by year
 - [Map of properties]({base}/kaart.html): interactive satellite map of sold and for-sale flats in Tallinn
 - [Privacy policy]({base}/privacy.html)
 
 ## Contact
-- E-mail: {mail}
+- Contact form: {base}/#kontakt
 - Phone: {tel}
 - Company: Tark Kinnisvara OÜ, registry code {reg}, Tallinn, Estonia
 """

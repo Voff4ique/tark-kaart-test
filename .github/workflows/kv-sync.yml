@@ -1,0 +1,49 @@
+name: KV.EE sync
+
+# Every 30 minutes the site pulls the company's active listings from the KV.EE XML feed (RBO -> Firma).
+# New listing on KV.EE -> appears on the site; sold/removed on KV.EE -> disappears from the site.
+# Needs the repository secret KV_FEED_URL (the "Kuulutuste väljund XML" link from RBO).
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kv-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch KV.EE feed
+        id: sync
+        env:
+          KV_FEED_URL: ${{ secrets.KV_FEED_URL }}
+        run: |
+          python3 tools/sync_kv.py | tee /tmp/sync.log
+          if grep -q '^CHANGED' /tmp/sync.log; then echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Rebuild site
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          pip install playwright
+          python3 tools/build.py
+          python3 tools/render.py
+      - name: Commit and publish
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "kv-sync"
+          git config user.email "kv-sync@users.noreply.github.com"
+          git add -A
+          SUMMARY=$(grep -E '^[+-] ' /tmp/sync.log | head -8 | tr '\n' ';')
+          git commit -m "KV.EE sync: ${SUMMARY}"
+          git pull --rebase origin main
+          git push origin HEAD:main

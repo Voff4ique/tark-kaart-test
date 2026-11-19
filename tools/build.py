@@ -238,7 +238,7 @@ def offers_ld(lang, page, name):
         items.append({"@type": "ListItem", "position": i + 1, "item": {
             "@type": "Offer", "url": f"https://www.kv.ee/{o['id']}", "price": o['pr'], "priceCurrency": "EUR",
             "availability": "https://schema.org/InStock", "seller": {"@id": BASE + "/#org"},
-            "itemOffered": {"@type": "House" if o.get("type") == "suvila" else "Apartment", "name": nm, "numberOfRooms": o['r'],
+            "itemOffered": {"@type": "House" if o.get("type") in ("suvila", "maja") else "Apartment", "name": nm, "numberOfRooms": o['r'],
                             "floorSize": {"@type": "QuantitativeValue", "value": o['m'], "unitCode": "MTK"},
                             "address": {"@type": "PostalAddress", "streetAddress": nm, "addressLocality": o.get("loc") or "Tallinn", "addressRegion": "Harju maakond", "addressCountry": "EE"},
                             "image": photo(o['p'][0], 46)}}})

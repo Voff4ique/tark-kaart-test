@@ -49,4 +49,4 @@ function render(){const T=TX[LANG];document.getElementById('g').innerHTML=OBJ.ma
   t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();go(1)}if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}})})}
 function setLang(l){LANG=l;document.documentElement.lang=l;document.querySelectorAll('[data-t]').forEach(e=>e.textContent=TX[l][e.dataset.t]);document.querySelectorAll('.lang a').forEach(b=>b.classList.toggle('on',b.dataset.l===l));render()}
 setLang(LANG);
-</script></body></html>
+</script><script src="/assets/analytics.js" defer></script></body></html>

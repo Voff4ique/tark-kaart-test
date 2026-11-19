@@ -74,4 +74,4 @@ function setYl(){yl.textContent=yr>=2027?TX[LANG].all:TX[LANG].until+yr}
 function setLang(l){LANG=l;document.documentElement.lang=l;document.querySelectorAll('[data-t]').forEach(e=>e.textContent=TX[l][e.dataset.t]);document.getElementById('q').placeholder=TX[l].search;document.querySelectorAll('.lg a').forEach(b=>b.classList.toggle('on',b.dataset.l===l));setYl();DATA.forEach(o=>{const c=ST[o.s];M[o.id].setPopupContent(popHtml(o))});render()}
 setLang(LANG);
 /* REAL-TIME (Supabase): channel('projects').on('postgres_changes',{event:'*',table:'projects'},p=>{...update o.s; M[o.id].setStyle({fillColor:ST[o.s][0]}); render()}) */
-</script></body></html>
+</script><script src="/assets/analytics.js" defer></script></body></html>

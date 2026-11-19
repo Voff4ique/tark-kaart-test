@@ -47,6 +47,12 @@ def node_tx(page_text):
     tmp.unlink(); jf.unlink()
     return json.loads(out)
 
+
+def add_an(s):
+    """Consent banner + GA4/Meta Pixel loader (loads nothing until the visitor accepts)."""
+    tag = '<script src="/assets/analytics.js" defer></script>'
+    return s.replace('</body>', tag + '</body>', 1) if '</body>' in s and tag not in s else s
+
 def js_obj(d):
     return json.dumps(d, ensure_ascii=False)
 
@@ -291,7 +297,7 @@ $('cf').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,
  $('cerr').style.display='none';$('cfail').style.display='none';const btn=f.querySelector('button[type=submit]'),lbl=btn.textContent;btn.disabled=true;btn.textContent=TX[LANG].f_sending;
  const data={name:E.name.value.trim(),phone:E.phone.value.trim(),email:E.email.value.trim(),addr:E.addr.value.trim(),msg:E.msg.value.trim(),lang:LANG,page:location.href};
  try{if(!FORM_URL)throw 0;const r=await fetch(FORM_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});const j=await r.json();if(!j.ok)throw 0;
-  $('cok').style.display='block';f.style.display='none'}catch(_){$('cfail').style.display='block';btn.disabled=false;btn.textContent=lbl}});"""
+  $('cok').style.display='block';f.style.display='none';window.tkTrack&&tkTrack('generate_lead',{form_id:'contact',has_address:!!data.addr})}catch(_){$('cfail').style.display='block';btn.disabled=false;btn.textContent=lbl}});"""
     s = must_sub(r"\$\('cf'\)\.addEventListener\('submit',e=>\{.*?e\.target\.style\.display='none'\}\);", lambda m: new_form, s)
     s = must_rep('</head>', '<script>window.TK_FORM_URL=' + json.dumps(C.get('formUrl', '')) + ';</script></head>', s)
     # sale cards, phone in nav, numbers, placeholders
@@ -309,7 +315,7 @@ $('cf').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,
           dict(breadcrumb(lang, 'index', tx), **{"@id": page_url(lang, 'index') + "#bc"}), faq, offers_ld(lang, 'index', tx['f4'])] + svc}
     s = must_sub(r'(<meta name="viewport"[^>]*>)', lambda m: m.group(1) + head_block(lang, 'index', A, ld), s, count=1)
     out = OUT / PFX[lang] / 'index.html'
-    out.parent.mkdir(exist_ok=True); out.write_text(s)
+    out.parent.mkdir(exist_ok=True); out.write_text(add_an(s))
 
 def build_lugu(lang):
     A = '' if lang == 'et' else '../'
@@ -332,7 +338,7 @@ def build_lugu(lang):
           dict(breadcrumb(lang, 'lugu', tx), **{"@id": page_url(lang, 'lugu') + "#bc"})]}
     s = must_sub(r'(<meta name="viewport"[^>]*>)', lambda m: m.group(1) + head_block(lang, 'lugu', A, ld), s, count=1)
     out = OUT / PFX[lang] / 'lugu.html'
-    out.parent.mkdir(exist_ok=True); out.write_text(s)
+    out.parent.mkdir(exist_ok=True); out.write_text(add_an(s))
 
 def build_myygil(lang):
     A = '' if lang == 'et' else '../'
@@ -360,7 +366,7 @@ def build_myygil(lang):
           dict(breadcrumb(lang, 'myygil', tx), **{"@id": page_url(lang, 'myygil') + "#bc"}),
           offers_ld(lang, 'myygil', tx['h'])]}
     s = must_sub(r'(<meta name="viewport"[^>]*>)', lambda m: m.group(1) + head_block(lang, 'myygil', A, ld), s, count=1)
-    out = OUT / PFX[lang] / 'myygil.html'; out.parent.mkdir(exist_ok=True); out.write_text(s)
+    out = OUT / PFX[lang] / 'myygil.html'; out.parent.mkdir(exist_ok=True); out.write_text(add_an(s))
 
 def build_kaart(lang):
     A = '' if lang == 'et' else '../'
@@ -375,7 +381,7 @@ def build_kaart(lang):
     ld = {"@context": "https://schema.org", "@graph": [org_node(), website_node(lang), webpage_node(lang, 'kaart', tx, {"breadcrumb": {"@id": page_url(lang, 'kaart') + "#bc"}}),
           dict(breadcrumb(lang, 'kaart', tx), **{"@id": page_url(lang, 'kaart') + "#bc"})]}
     s = must_sub(r'(<meta name="viewport"[^>]*>)', lambda m: m.group(1) + head_block(lang, 'kaart', A, ld), s, count=1)
-    out = OUT / PFX[lang] / 'kaart.html'; out.parent.mkdir(exist_ok=True); out.write_text(s)
+    out = OUT / PFX[lang] / 'kaart.html'; out.parent.mkdir(exist_ok=True); out.write_text(add_an(s))
 
 PRIV_TPL = """<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -402,7 +408,7 @@ def build_privacy(lang):
           webpage_node(lang, 'privacy', tx, {"breadcrumb": {"@id": page_url(lang, 'privacy') + "#bc"}}),
           dict(breadcrumb(lang, 'privacy', tx), **{"@id": page_url(lang, 'privacy') + "#bc"})]}
     page = must_sub(r'(<meta name="viewport"[^>]*>)', lambda m: m.group(1) + head_block(lang, 'privacy', A, ld), page, count=1)
-    out = OUT / PFX[lang] / 'privacy.html'; out.parent.mkdir(exist_ok=True); out.write_text(page)
+    out = OUT / PFX[lang] / 'privacy.html'; out.parent.mkdir(exist_ok=True); out.write_text(add_an(page))
 
 # ------------------------------------------------------------------ static files
 def write_static():

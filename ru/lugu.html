@@ -231,4 +231,4 @@ function prog(id){const r=$(id).getBoundingClientRect(),h=r.height-innerHeight;r
 let tick=false;function on(f){if(tick&&!f)return;tick=true;requestAnimationFrame(()=>{tick=false;scene(prog('lugu'));mapScene(prog('kaart'))})}
 addEventListener('scroll',on,{passive:true});addEventListener('resize',()=>{map.invalidateSize();fit();on(true)});
 setLang(LANG);if(!FINE)document.querySelector('.mh').textContent=TX[LANG].maphT;map.whenReady(()=>on(true));
-</script></body></html>
+</script><script src="/assets/analytics.js" defer></script></body></html>

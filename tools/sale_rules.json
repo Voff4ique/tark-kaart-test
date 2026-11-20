@@ -1,11 +1,34 @@
 {
   "_note": "Правила поверх выгрузки KV.EE (tools/sync_kv.py). Всё, что в KV активно и не исключено здесь, автоматически попадает в «Müügil».",
-  "exclude_ids": [3920240, 3866480],
-  "exclude_addr_prefix": ["Merivälja tee 36"],
-  "prefer_ids": {"Mustamäe tee 141": 3945515},
+  "exclude_ids": [
+    3920240,
+    3866480
+  ],
+  "exclude_addr_prefix": [
+    "Merivälja tee 36"
+  ],
+  "prefer_ids": {
+    "Mustamäe tee 141": 3945515
+  },
   "overrides": {},
-  "remove_addr": ["Liivalaia tn 30"],
+  "remove_addr": [
+    "Liivalaia tn 30"
+  ],
   "sold_extra": [
-    {"a": "Lastekodu tn 10", "d": "Kesklinna", "lat": 59.430647, "lon": 24.765274, "m2": 52.8, "rooms": "3t", "sd": null}
+    {
+      "a": "Lastekodu tn 10",
+      "d": "Kesklinna",
+      "lat": 59.430647,
+      "lon": 24.765274,
+      "m2": 52.8,
+      "rooms": "3t",
+      "sd": null
+    }
+  ],
+  "mark_sold": [
+    {
+      "a": "Majaka tn 27",
+      "sd": "2026-11"
+    }
   ]
 }

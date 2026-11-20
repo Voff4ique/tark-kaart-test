@@ -122,7 +122,7 @@ def main():
     if len(old) >= 3 and len(items) < len(old) * 0.4 and '--force' not in sys.argv:
         raise SystemExit(f'refusing to publish {len(items)} listings after {len(old)} (feed looks broken); use --force')
     cur = [{k: v for k, v in x.items() if k not in ('hide', 'mo')} for x in old]
-    if cur == items and prev.get('remove_addr') == RULES.get('remove_addr') and prev.get('sold_extra') == RULES.get('sold_extra'):
+    if cur == items and prev.get('remove_addr') == RULES.get('remove_addr') and prev.get('sold_extra') == RULES.get('sold_extra') and prev.get('mark_sold') == RULES.get('mark_sold'):
         print('no changes')
         return
     new_ids, gone = {x['id'] for x in items}, {x['id']: x['a'] for x in old}
@@ -134,7 +134,7 @@ def main():
             print('- removed', i, a)
     data = {'updated': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d'),
             'source': 'KV.EE XML feed (RBO)', 'items': items,
-            'remove_addr': RULES.get('remove_addr', []), 'sold_extra': RULES.get('sold_extra', [])}
+            'remove_addr': RULES.get('remove_addr', []), 'sold_extra': RULES.get('sold_extra', []), 'mark_sold': RULES.get('mark_sold', [])}
     SALE.write_text(json.dumps(data, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print('CHANGED')
 

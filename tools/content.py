@@ -3,20 +3,20 @@
 
 META = {
  'index': {
-  'et': ("Tark Kinnisvara — korterite ost, renoveerimine ja müük Tallinnas",
-         "Ostame remonti vajavad ja pärandiks saadud korterid Tallinnas, hindame 24 tunniga. Renoveerime ja müüme valmis kodud. Vaata meie objekte kaardil."),
-  'ru': ("Tark Kinnisvara — выкуп, ремонт и продажа квартир в Таллине",
-         "Выкупаем квартиры, требующие ремонта, и унаследованные квартиры в Таллине, оценка за 24 часа. Ремонтируем и продаём готовые дома. Наши объекты на карте."),
-  'en': ("Tark Kinnisvara — we buy, renovate and sell flats in Tallinn",
-         "We buy flats needing renovation and inherited flats in Tallinn, valuation within 24 hours. We renovate and sell move-in-ready homes. See our projects on the map."),
+  'et': ("Korteri väljaost Tallinnas – hinnang 24 h | Tark Kinnisvara",
+         "Müü korter Tallinnas kiiresti: ostame remonti vajavad ja pärandatud korterid, hinnang 24 tunniga. Renoveerime ja müüme kolimisvalmis kodusid."),
+  'ru': ("Выкуп квартир в Таллине за 24 часа | Tark Kinnisvara",
+         "Быстро продать квартиру в Таллине: выкупаем квартиры, требующие ремонта, и унаследованные, оценка за 24 часа. Ремонтируем и продаём квартиры под заселение."),
+  'en': ("We buy flats in Tallinn – offer in 24 hours | Tark Kinnisvara",
+         "Sell your Tallinn flat fast: we buy flats needing renovation and inherited flats, valuation within 24 hours. We renovate and sell move-in-ready homes."),
  },
  'myygil': {
-  'et': ("Müügil olevad korterid Tallinnas | Tark Kinnisvara",
-         "Valminud ja kolimisvalmis korterid Tallinnas ja selle lähiümbruses: hinnad, fotod ja vaatamise broneerimine."),
-  'ru': ("Квартиры в продаже в Таллине | Tark Kinnisvara",
-         "Готовые квартиры в Таллине и окрестностях: цены, фото и запись на просмотр."),
-  'en': ("Flats for sale in Tallinn | Tark Kinnisvara",
-         "Finished, move-in-ready flats in Tallinn and nearby: prices, photos and viewing bookings."),
+  'et': ("Korterid müügis Tallinnas – renoveeritud kodud | Tark Kinnisvara",
+         "Renoveeritud korterid müügis Tallinnas ja Harjumaal: hind, pind, korrus ja fotod. Broneeri vaatamine veebis. Müüja Tark Kinnisvara OÜ."),
+  'ru': ("Квартиры на продажу в Таллине – с ремонтом | Tark Kinnisvara",
+         "Квартиры с ремонтом на продажу в Таллине и Харьюмаа: цена, площадь, этаж и фото. Запись на просмотр онлайн. Продавец Tark Kinnisvara OÜ."),
+  'en': ("Renovated flats for sale in Tallinn | Tark Kinnisvara",
+         "Renovated flats for sale in Tallinn and Harju County: price, size, floor and photos. Book a viewing online. Seller: Tark Kinnisvara OÜ."),
  },
  'kaart': {
   'et': ("Tallinna objektide kaart — müüdud ja müügil | Tark Kinnisvara",

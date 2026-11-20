@@ -312,7 +312,7 @@ $('cf').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,
     s = re.sub(r'<b data-n="(\w+)"></b>', lambda m: f'<b data-n="{m.group(1)}">{NUM[m.group(1)]}</b>', s)
     s = re.sub(r'data-ph="(\w+)"', lambda m: f'placeholder="{esc(tx[m.group(1)])}" data-ph="{m.group(1)}"', s)
     faq = {"@type": "FAQPage", "@id": page_url(lang, 'index') + "#faq", "mainEntity": [
-        {"@type": "Question", "name": tx[f'q{i}'], "acceptedAnswer": {"@type": "Answer", "text": tx[f'a{i}']}} for i in (1, 2, 3)]}
+        {"@type": "Question", "name": tx[f'q{i}'], "acceptedAnswer": {"@type": "Answer", "text": tx[f'a{i}']}} for i in range(1, 8)]}
     svc = [{"@type": "Service", "name": tx[f'sv{i}h'], "description": tx[f'sv{i}p'], "serviceType": ["Real estate purchase", "Flat renovation", "Real estate sales"][i - 1],
             "provider": {"@id": BASE + "/#org"}, "areaServed": {"@type": "City", "name": "Tallinn"}} for i in (1, 2, 3)]
     ld = {"@context": "https://schema.org", "@graph": [org_node(), website_node(lang), webpage_node(lang, 'index', tx, {"breadcrumb": {"@id": page_url(lang, 'index') + "#bc"}}),

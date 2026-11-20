@@ -51,6 +51,7 @@ def node_tx(page_text):
 def add_an(s):
     """Consent banner + GA4/Meta Pixel loader (loads nothing until the visitor accepts)."""
     tag = '<script src="/assets/analytics.js" defer></script>'
+    s = s.replace('</head>', '<style>.lang a{display:inline-block;box-sizing:border-box;min-width:24px;min-height:24px;padding:5px 4px;text-align:center;opacity:.8}.lang a.on{opacity:1}.sb h2{font:400 26px Fraunces,serif;margin:0}</style></head>', 1) if '.lang a{display:inline-block' not in s else s
     return s.replace('</body>', tag + '</body>', 1) if '</body>' in s and tag not in s else s
 
 def js_obj(d):
@@ -97,6 +98,7 @@ def common(s, lang, page, A):
     s = re.sub(r'<link rel="icon"[^>]*>', '', s)
     s = re.sub(r'<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">', '', s)
     s = s.replace('<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>', f'<script src="{A}assets/vendor/leaflet/leaflet.js"></script>')
+    s = s.replace('js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"', f'js:"{A}assets/vendor/leaflet/leaflet.js",css:"{A}assets/vendor/leaflet/leaflet.css"')
     s = re.sub(r'<title>.*?</title>', '', s, count=1, flags=re.S)
     s = s.replace('<html lang="et">', f'<html lang="{lang}">')
     # remove leftover staging copy from the source dictionaries
@@ -125,8 +127,9 @@ def head_block(lang, page, A, jsonld):
              f'<link rel="apple-touch-icon" href="{A}assets/icons/apple-touch-icon.png"><link rel="manifest" href="{A}manifest.webmanifest">')
     pre = ''.join(f'<link rel="preload" as="font" type="font/woff2" crossorigin href="{A}assets/fonts/{f}.woff2">'
                   for f in ('inter-latin-400-normal', 'fraunces-latin-600-normal'))
-    css = f'<link rel="stylesheet" href="{A}assets/fonts.css">'
-    if page in ('index', 'kaart', 'lugu'):
+    fcss = (ROOT / 'assets/fonts.css').read_text().replace('url(fonts/', f'url({A}assets/fonts/')
+    css = '<style>' + fcss + '</style>'
+    if page in ('kaart', 'lugu'):
         css += f'<link rel="stylesheet" href="{A}assets/vendor/leaflet/leaflet.css"><link rel="preconnect" href="https://server.arcgisonline.com" crossorigin>'
     if page == 'myygil':
         css += '<link rel="preconnect" href="https://img-kv.ee" crossorigin>'

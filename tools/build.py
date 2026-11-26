@@ -302,7 +302,7 @@ $('cf').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,
  if(!E.name.value.trim()||!(E.phone.value.trim()||E.email.value.trim())||!E.ok.checked)return bad();
  if(Date.now()-T0<2500)return;
  $('cerr').style.display='none';$('cfail').style.display='none';const btn=f.querySelector('button[type=submit]'),lbl=btn.textContent;btn.disabled=true;btn.textContent=TX[LANG].f_sending;
- const data={name:E.name.value.trim(),phone:E.phone.value.trim(),email:E.email.value.trim(),addr:E.addr.value.trim(),msg:E.msg.value.trim(),lang:LANG,page:location.href};
+ const data={name:E.name.value.trim(),phone:E.phone.value.trim(),email:E.email.value.trim(),addr:E.addr.value.trim(),msg:E.msg.value.trim(),lang:LANG,page:location.href,hp:E.website.value,t:Date.now()-T0};
  try{if(!FORM_URL)throw 0;const r=await fetch(FORM_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});const j=await r.json();if(!j.ok)throw 0;
   $('cok').style.display='block';f.style.display='none';window.tkTrack&&tkTrack('generate_lead',{form_id:'contact',has_address:!!data.addr})}catch(_){$('cfail').style.display='block';btn.disabled=false;btn.textContent=lbl}});"""
     s = must_sub(r"\$\('cf'\)\.addEventListener\('submit',e=>\{.*?e\.target\.style\.display='none'\}\);", lambda m: new_form, s)

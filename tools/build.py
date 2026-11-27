@@ -5,6 +5,7 @@ Run:  python3 tools/build.py
 import re, json, os, sys, html, subprocess, pathlib, shutil, datetime
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import content as K
+from addr import hkey
 from mark import mark_svg, standalone
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -180,10 +181,16 @@ def breadcrumb(lang, page, tx):
 # ------------------------------------------------------------------ KV.EE sale data
 SALE_DATA = json.load(open(ROOT / 'tools/sale.json'))
 D_TABLE = {'Kesklinn': 'Kesklinna', 'Põhja-Tallinn': 'Põhja-Tallinna'}
+# newly sold flats from the project table (tools/sync_sheet.py); a KV.EE listing of the same house and area is hidden at once
+_SF = ROOT / 'tools/sheet_sold.json'
+SHEET_EVENTS = json.load(open(_SF, encoding='utf-8')).get('events', []) if _SF.exists() else []
+def sold_in_sheet(o):
+    return any(hkey(e['a']) == hkey(o['a']) and e.get('m') and abs(e['m'] - o['m']) <= 0.6 for e in SHEET_EVENTS)
+
 def sale_items():
     out = []
     for o in SALE_DATA['items']:
-        if o.get('hide'): continue
+        if o.get('hide') or sold_in_sheet(o): continue
         d = dict(o); d['pm'] = round(o['pr'] / o['m']); out.append(d)
     return out
 
@@ -196,6 +203,11 @@ def apply_sale(s, name):
     i = s.index(key) + len(key)
     arr, end = json.JSONDecoder().raw_decode(s[i:])
     arr = [o for o in arr if o['s'] != 'Valmis']
+    # a flat that is on KV.EE is no longer "in progress": drop one «Töös» point per active listing of the same house
+    for o in sale_items():
+        for p in arr:
+            if p['s'] == 'Töös' and hkey(p['a']) == hkey(o['a']):
+                arr.remove(p); break
     for o in sale_items():
         e = {'a': o['a'], 's': 'Valmis', 'lat': o['lat'], 'lon': o['lon'], 'd': D_TABLE.get(o['d'], o['d']), 'sd': None}
         if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': o['m'], 'rooms': f"{o['r']}t", 'price': None})
@@ -208,6 +220,19 @@ def apply_sale(s, name):
     for x in SALE_DATA.get('sold_extra', []):
         e = {'a': x['a'], 's': 'Müüdud', 'lat': x['lat'], 'lon': x['lon'], 'd': x['d'], 'sd': x.get('sd')}
         if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': x.get('m2'), 'rooms': x.get('rooms'), 'price': None})
+        arr.append(e)
+    # newly sold flats from the project table: flip an in-progress point of that house, otherwise add a sold point
+    for ev in SHEET_EVENTS:
+        hk = hkey(ev['a'])
+        cand = next((o for o in arr if o['s'] in ('Töös', 'Booked') and hkey(o['a']) == hk), None)
+        if cand:
+            cand['s'] = 'Müüdud'; cand['sd'] = ev.get('sd'); continue
+        base = next((o for o in arr if hkey(o['a']) == hk and 'lat' in o), None)
+        lat, lon, dist = (base['lat'], base['lon'], base['d']) if base else (ev.get('lat'), ev.get('lon'), D_TABLE.get(ev.get('d'), ev.get('d')))
+        if lat is None:
+            print('WARNING: no coordinates for sold flat', ev['a'], file=sys.stderr); continue
+        e = {'a': base['a'] if base else ev.get('site_a') or re.sub(r'\s*[-/]\s*\d+\S*$', '', ev['a']), 's': 'Müüdud', 'lat': lat, 'lon': lon, 'd': dist, 'sd': ev.get('sd')}
+        if name == 'DATA0': e.update({'q': 'tapne_nr', 'm2': ev.get('m'), 'rooms': ev.get('rooms'), 'price': None})
         arr.append(e)
     s = s[:i] + json.dumps(arr, ensure_ascii=False) + s[i + end:]
     s = s.replace("'Booked':'Müüdud',", '')
